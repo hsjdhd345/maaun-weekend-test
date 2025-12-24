@@ -277,6 +277,92 @@ function viewCorrections(){
     let qList=subjects[sub];
     let html=`<h3>${sub}</h3>`;
     qList.forEach((q,i)=>{
+      let questionDiv=document.querySelector(`input[name=${q}]`).closest('.question');
+      let questionLabel=questionDiv.innerHTML;
+      let selected=document.querySelector(`input[name=${q}]:checked`)?.value || "Not answered";
+      let correct=answers[q];
+      html+=`
+        <div style="margin-bottom:10px;padding:8px;border:1px solid #ccc;border-radius:6px;">
+          <strong>Q${i+1}:</strong><br>
+          ${questionLabel}<br>
+          Your answer: <span style="color:blue">${selected}</span><br>
+          Correct answer: <span style="color:green">${correct}</span>
+        </div>
+      `;
+    });
+    correctionBox.innerHTML+=html;
+  }
+}
+
+// Admin
+function adminLogin(){
+  const pass=document.getElementById("adminPassword").value;
+  if(pass!=="mauun123"){alert("Wrong password");return;}
+  document.getElementById("adminPanel").style.display="block";
+  displayResults();
+}
+function displayResults(){
+  const container=document.getElementById("resultsContainer");
+  container.innerHTML="";
+  const results=JSON.parse(localStorage.getItem("studentResults")||"[]");
+  if(results.length===0){container.innerHTML="<p>No results submitted yet.</p>";return;}
+  results.forEach(r=>{
+    const card=document.createElement("div");
+    card.className="card";
+    let subjectsHtml="";
+    const icons={"Chemistry":"fas fa-flask","French":"fas fa-language","Physics":"fas fa-atom","Maths":"fas fa-square-root-alt","English":"fas fa-book"};
+    for(let sub in r.subjectScores){
+      subjectsHtml+=`<div class="subject-score"><i class="${icons[sub]}"></i>${sub}: ${r.subjectScores[sub]}</div>`;
+    }
+    card.innerHTML=`<h3>${r.fullName} (${r.matricNo})</h3>
+    <p>Department: ${r.department}</p>
+    ${subjectsHtml}
+    <p><b>Total: ${r.total}/${Object.keys(answers).length}</b></p>`;
+    container.appendChild(card);
+  });
+}
+</script>
+
+</body>
+    </html>sults=JSON.parse(localStorage.getItem("studentResults")||"[]");
+  results.push({...student,subjectScores,total});
+  localStorage.setItem("studentResults",JSON.stringify(results));
+
+  let msg=`MAAUN WEEKEND TEST RESULT
+Name: ${student.fullName}
+Matric No: ${student.matricNo}
+Department: ${student.department}
+Total Score: ${total}/${Object.keys(answers).length}
+Chemistry: ${subjectScores["Chemistry"]}
+French: ${subjectScores["French"]}
+Physics: ${subjectScores["Physics"]}
+Maths: ${subjectScores["Maths"]}
+English: ${subjectScores["English"]}`;
+  const link="https://wa.me/2348068581625?text="+encodeURIComponent(msg);
+
+  document.getElementById("resultBox").innerHTML=`
+    <b>Total Score:</b> ${total}<br>
+    <a href="${link}" target="_blank"><button>Send to WhatsApp</button></a>
+    <button onclick="viewCorrections()">View Corrections</button>
+    <div id="correctionBox" style="margin-top:20px;"></div>
+  `;
+}
+
+// View corrections
+function viewCorrections(){
+  const correctionBox=document.getElementById("correctionBox");
+  correctionBox.innerHTML="";
+  const subjects={
+    "Chemistry":["c1","c2"],
+    "French":["f1","f2"],
+    "Physics":["p1"],
+    "Maths":["m1"],
+    "English":["e1"]
+  };
+  for(let sub in subjects){
+    let qList=subjects[sub];
+    let html=`<h3>${sub}</h3>`;
+    qList.forEach((q,i)=>{
       let questionLabel=document.querySelector(`.questions input[name=${q}]`).closest('.questions').querySelector(`.question:nth-child(${i+1})`).innerText;
       let selected=document.querySelector(`input[name=${q}]:checked`)?.value || "Not answered";
       let correct=answers[q];
@@ -383,5 +469,6 @@ function displayResults(){
 
 </body>
 </html>
+
 
 
