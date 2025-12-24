@@ -4,12 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MAAUN Weekend Test</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
 :root{
   --primary:#0b4f6c;
   --bg:#f4f7fb;
   --success:#2ecc71;
   --card:#ffffff;
+  --chem:#f0e68c;
+  --fr:#ffb347;
+  --phy:#87ceeb;
+  --math:#d1c4e9;
+  --eng:#ffcccb;
 }
 body{margin:0;font-family:system-ui, Arial,sans-serif;background:var(--bg);}
 header{background:var(--primary);color:white;display:flex;align-items:center;padding:15px;}
@@ -17,25 +23,41 @@ header img{width:65px;margin-right:12px;}
 header h1{font-size:17px;margin:0;}
 header p{font-size:13px;margin:0;opacity:.9;}
 .container{max-width:900px;margin:20px auto;padding:15px;}
-.card{background:var(--card);border-radius:12px;padding:20px;box-shadow:0 10px 25px rgba(0,0,0,.06);margin-bottom:20px;}
+.card{background:var(--card);border-radius:12px;padding:20px;box-shadow:0 6px 18px rgba(0,0,0,.08);margin-bottom:20px;transition:transform .2s,box-shadow .2s;}
+.card:hover{transform:translateY(-4px);box-shadow:0 10px 25px rgba(0,0,0,.12);}
 input,select,button{width:100%;padding:12px;margin-bottom:12px;border-radius:8px;font-size:15px;}
 input,select{border:1px solid #ccc;}
-button{background:var(--primary);color:white;border:none;cursor:pointer;}
+button{background:var(--primary);color:white;border:none;cursor:pointer;transition:background .2s;}
+button:hover:not(:disabled){background:#09405a;}
 button:disabled{background:#999;cursor:not-allowed;}
-.subject{background:#eef3f8;padding:14px;border-radius:10px;margin-top:15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:600;}
+.subject{background:#eef3f8;padding:14px;border-radius:10px;margin-top:15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:600;transition:background .2s;}
+.subject:hover{background:#e2f0ff;}
 .subject.done{background:#eafaf1;border-left:6px solid var(--success);}
 .arrow{transition:.3s;}
 .subject.open .arrow{transform:rotate(180deg);}
-.questions{display:none;padding:15px 10px;}
+.questions{display:none;padding:15px 10px;overflow:hidden;transition:max-height .4s ease;}
 .question{margin-bottom:16px;}
-.question label{display:block;margin-top:6px;}
+.question label{
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: #f9f9f9;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.question label:hover{background: #eef3f8;}
+.question input[type="radio"]{margin-right: 10px; flex-shrink:0;}
 .result{margin-top:20px;padding:15px;border-radius:10px;background:#f7f7f7;}
 .tab-buttons{display:flex;margin-bottom:20px;}
 .tab-buttons button{flex:1;margin-right:5px;}
 .tab-buttons button:last-child{margin-right:0;}
 .tab-content{display:none;}
 .tab-content.active{display:block;}
-.subject-score{margin:5px 0;padding:8px;border-radius:6px;background:#f0f0f0;}
+.subject-score{margin:5px 0;padding:8px;border-radius:6px;background:#f0f0f0;display:flex;align-items:center;}
+.subject-score i{margin-right:8px;color:var(--primary);}
+.subject-header i{margin-right:8px;}
 </style>
 </head>
 <body>
@@ -71,8 +93,11 @@ button:disabled{background:#999;cursor:not-allowed;}
 
   <div class="card" id="testBox" style="display:none">
     <h2>Weekend Test</h2>
+    
     <!-- CHEMISTRY -->
-    <div class="subject" onclick="toggle(this,'chem')">Chemistry <span class="arrow">▼</span></div>
+    <div class="subject subject-header" style="border-left:5px solid var(--chem);" onclick="toggle(this,'chem')">
+      <span><i class="fas fa-flask"></i>Chemistry</span> <span class="arrow">▼</span>
+    </div>
     <div class="questions" id="chem">
       <div class="question">
         1. Element with 2,8,1?
@@ -89,8 +114,11 @@ button:disabled{background:#999;cursor:not-allowed;}
         <label><input type="radio" name="c2" value="D"> Atomic number</label>
       </div>
     </div>
+
     <!-- FRENCH -->
-    <div class="subject" onclick="toggle(this,'fr')">French <span class="arrow">▼</span></div>
+    <div class="subject subject-header" style="border-left:5px solid var(--fr);" onclick="toggle(this,'fr')">
+      <span><i class="fas fa-language"></i>French</span> <span class="arrow">▼</span>
+    </div>
     <div class="questions" id="fr">
       <div class="question">
         3. 45 in French?
@@ -107,8 +135,11 @@ button:disabled{background:#999;cursor:not-allowed;}
         <label><input type="radio" name="f2" value="D"> Deux-cent</label>
       </div>
     </div>
+
     <!-- PHYSICS -->
-    <div class="subject" onclick="toggle(this,'phy')">Physics <span class="arrow">▼</span></div>
+    <div class="subject subject-header" style="border-left:5px solid var(--phy);" onclick="toggle(this,'phy')">
+      <span><i class="fas fa-atom"></i>Physics</span> <span class="arrow">▼</span>
+    </div>
     <div class="questions" id="phy">
       <div class="question">
         5. Vector quantity has?
@@ -118,8 +149,11 @@ button:disabled{background:#999;cursor:not-allowed;}
         <label><input type="radio" name="p1" value="D"> Mass</label>
       </div>
     </div>
+
     <!-- MATHS -->
-    <div class="subject" onclick="toggle(this,'math')">Mathematics <span class="arrow">▼</span></div>
+    <div class="subject subject-header" style="border-left:5px solid var(--math);" onclick="toggle(this,'math')">
+      <span><i class="fas fa-square-root-alt"></i>Mathematics</span> <span class="arrow">▼</span>
+    </div>
     <div class="questions" id="math">
       <div class="question">
         6. A={1,2}, B={2,3}, A∩B?
@@ -129,8 +163,11 @@ button:disabled{background:#999;cursor:not-allowed;}
         <label><input type="radio" name="m1" value="D">{1,2,3}</label>
       </div>
     </div>
+
     <!-- ENGLISH -->
-    <div class="subject" onclick="toggle(this,'eng')">English <span class="arrow">▼</span></div>
+    <div class="subject subject-header" style="border-left:5px solid var(--eng);" onclick="toggle(this,'eng')">
+      <span><i class="fas fa-book"></i>English</span> <span class="arrow">▼</span>
+    </div>
     <div class="questions" id="eng">
       <div class="question">
         7. Which is a noun?
@@ -140,6 +177,7 @@ button:disabled{background:#999;cursor:not-allowed;}
         <label><input type="radio" name="e1" value="D"> Blue</label>
       </div>
     </div>
+
     <button id="submitBtn" onclick="submitTest()">Submit Test</button>
     <div class="result" id="resultBox"></div>
   </div>
@@ -179,12 +217,16 @@ function startTest(){
 function toggle(el,id){
   el.classList.toggle("open");
   const q=document.getElementById(id);
-  q.style.display=q.style.display==="block"?"none":"block";
+  if(q.style.maxHeight){
+    q.style.maxHeight=null;
+    setTimeout(()=>q.style.display="none",300);
+  }else{
+    q.style.display="block";
+    setTimeout(()=>q.style.maxHeight=q.scrollHeight+"px",10);
+  }
 }
 function submitTest(){
-  let subjectScores={};
-  let total=0;
-  // per subject
+  let subjectScores={},total=0;
   subjectScores["Chemistry"]=(["c1","c2"].filter(q=>document.querySelector(`input[name=${q}]:checked`)?.value===answers[q]).length);
   subjectScores["French"]=(["f1","f2"].filter(q=>document.querySelector(`input[name=${q}]:checked`)?.value===answers[q]).length);
   subjectScores["Physics"]=(["p1"].filter(q=>document.querySelector(`input[name=${q}]:checked`)?.value===answers[q]).length);
@@ -195,12 +237,10 @@ function submitTest(){
   document.querySelectorAll("input").forEach(i=>i.disabled=true);
   document.getElementById("submitBtn").disabled=true;
 
-  // Save to localStorage
   let results=JSON.parse(localStorage.getItem("studentResults")||"[]");
   results.push({...student,subjectScores,total});
   localStorage.setItem("studentResults",JSON.stringify(results));
 
-  // WhatsApp message
   let msg=`MAAUN WEEKEND TEST RESULT
 Name: ${student.fullName}
 Matric No: ${student.matricNo}
@@ -218,7 +258,7 @@ English: ${subjectScores["English"]}`;
 // Admin
 function adminLogin(){
   const pass=document.getElementById("adminPassword").value;
-  if(pass!=="admin123"){alert("Wrong password");return;}
+  if(pass!=="mauun123"){alert("Wrong password");return;}
   document.getElementById("adminPanel").style.display="block";
   displayResults();
 }
@@ -231,8 +271,21 @@ function displayResults(){
     const card=document.createElement("div");
     card.className="card";
     let subjectsHtml="";
+    const icons={"Chemistry":"fas fa-flask","French":"fas fa-language","Physics":"fas fa-atom","Maths":"fas fa-square-root-alt","English":"fas fa-book"};
     for(let sub in r.subjectScores){
-      subjectsHtml+=`<div class="subject-score">${sub}: ${r.subjectScores[sub]}</div>`;
+      subjectsHtml+=`<div class="subject-score"><i class="${icons[sub]}"></i>${sub}: ${r.subjectScores[sub]}</div>`;
+    }
+    card.innerHTML=`<h3>${r.fullName} (${r.matricNo})</h3>
+    <p>Department: ${r.department}</p>
+    ${subjectsHtml}
+    <p><b>Total: ${r.total}/${Object.keys(answers).length}</b></p>`;
+    container.appendChild(card);
+  });
+}
+</script>
+
+</body>
+</html>res[sub]}</div>`;
     }
     card.innerHTML=`<h3>${r.fullName} (${r.matricNo})</h3>
     <p>Department: ${r.department}</p>
@@ -245,3 +298,4 @@ function displayResults(){
 
 </body>
 </html>
+
