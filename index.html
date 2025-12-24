@@ -3,167 +3,297 @@
 <head>
 <meta charset="UTF-8">
 <title>MAAUN Weekend Test</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{font-family:Arial;background:#eef2f5;margin:0}
-.header{background:#083b52;color:#fff;padding:15px;display:flex;align-items:center}
-.header img{width:70px;margin-right:15px}
-.container{max-width:900px;margin:20px auto;background:#fff;padding:20px;border-radius:8px}
-input,select{width:100%;padding:10px;margin:6px 0}
-button{padding:12px;background:#083b52;color:#fff;border:none;border-radius:5px;cursor:pointer;width:100%}
-.subject{background:#f0f6fa;padding:12px;margin-top:10px;cursor:pointer;font-weight:bold}
-.questions{display:none;padding:10px}
-label{display:block;margin:5px 0}
-.correct{color:green}
-.wrong{color:red}
+:root {
+  --primary:#0b4f6c;
+  --light:#f4f7fb;
+  --success:#2ecc71;
+}
+
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background:var(--light);
+}
+
+/* HEADER */
+.header {
+  background:var(--primary);
+  color:white;
+  padding:15px;
+  display:flex;
+  align-items:center;
+}
+.header img {
+  width:70px;
+  margin-right:15px;
+}
+.header h1 {
+  font-size:18px;
+  margin:0;
+}
+.header p {
+  margin:0;
+  font-size:13px;
+  opacity:.9;
+}
+
+/* CONTAINER */
+.container {
+  max-width:900px;
+  margin:20px auto;
+  padding:20px;
+}
+
+/* CARD */
+.card {
+  background:white;
+  border-radius:10px;
+  padding:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,.05);
+}
+
+/* INPUTS */
+input, select {
+  width:100%;
+  padding:12px;
+  margin-bottom:12px;
+  border-radius:6px;
+  border:1px solid #ccc;
+  font-size:15px;
+}
+
+/* BUTTON */
+button {
+  background:var(--primary);
+  color:white;
+  border:none;
+  padding:14px;
+  width:100%;
+  border-radius:8px;
+  font-size:16px;
+  cursor:pointer;
+}
+button:disabled {
+  background:#999;
+}
+
+/* SUBJECT ACCORDION */
+.subject {
+  background:#eef3f8;
+  padding:14px;
+  border-radius:8px;
+  margin-top:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+  font-weight:600;
+}
+.subject.done {
+  background:#e9f9f0;
+  border-left:5px solid var(--success);
+}
+
+.arrow {
+  transition:.3s;
+}
+.subject.open .arrow {
+  transform:rotate(180deg);
+}
+
+.questions {
+  display:none;
+  padding:15px;
+}
+
+/* QUESTIONS */
+.question {
+  margin-bottom:15px;
+}
+.question label {
+  display:block;
+  margin-top:6px;
+}
+
+/* RESULT */
+.result {
+  margin-top:20px;
+  padding:15px;
+  border-radius:8px;
+  background:#f7f7f7;
+}
 </style>
 </head>
 
 <body>
 
 <div class="header">
-<img src="maaun-logo.jpg">
-<h2>MAAUN Weekend Test</h2>
+  <img src="maaun-logo.jpg">
+  <div>
+    <h1>Maryam Abacha American University of Nigeria</h1>
+    <p>Weekend Test • Online Assessment</p>
+  </div>
 </div>
 
-<div class="container" id="login">
-<h3>Enter Your Details</h3>
-<input id="name" placeholder="Full Name">
-<input id="matric" placeholder="Matric Number">
-<select id="dept">
-<option value="">Select Department</option>
-<option>PTY</option>
-<option>MLS</option>
-</select>
-<button onclick="start()">Start Test</button>
+<div class="container">
+
+<!-- LOGIN -->
+<div class="card" id="login">
+  <h2>Student Login</h2>
+  <input id="name" placeholder="Full Name">
+  <input id="matric" placeholder="Matric Number">
+  <select id="dept">
+    <option value="">Select Department</option>
+    <option>PTY</option>
+    <option>MLS</option>
+  </select>
+  <button onclick="start()">Start Test</button>
 </div>
 
-<div class="container" id="test" style="display:none">
-<div id="subjects"></div>
-<button onclick="submitTest()">Submit Test</button>
-</div>
+<!-- TEST -->
+<div class="card" id="test" style="display:none">
+  <h2>Weekend Test</h2>
 
-<div class="container" id="correction" style="display:none">
-<h3>Correction</h3>
-<div id="corrections"></div>
-<button onclick="sendWhatsApp()">Send Result to WhatsApp</button>
+  <!-- CHEMISTRY -->
+  <div class="subject" onclick="toggle(this,'chem')">
+    Chemistry <span class="arrow">▼</span>
+  </div>
+  <div class="questions" id="chem">
+    <div class="question">
+      1. Element with 2,8,1?
+      <label><input type="radio" name="c1" value="A"> Magnesium</label>
+      <label><input type="radio" name="c1" value="B"> Sodium</label>
+      <label><input type="radio" name="c1" value="C"> Aluminium</label>
+      <label><input type="radio" name="c1" value="D"> Neon</label>
+    </div>
+    <div class="question">
+      2. Same group means same?
+      <label><input type="radio" name="c2" value="A"> Mass</label>
+      <label><input type="radio" name="c2" value="B"> Shells</label>
+      <label><input type="radio" name="c2" value="C"> Valence electrons</label>
+      <label><input type="radio" name="c2" value="D"> Atomic number</label>
+    </div>
+  </div>
+
+  <!-- FRENCH -->
+  <div class="subject" onclick="toggle(this,'fr')">
+    French <span class="arrow">▼</span>
+  </div>
+  <div class="questions" id="fr">
+    <div class="question">
+      3. 45 in French?
+      <label><input type="radio" name="f1" value="A"> Quarante-cinq</label>
+      <label><input type="radio" name="f1" value="B"> Cinquante</label>
+      <label><input type="radio" name="f1" value="C"> Trente-cinq</label>
+      <label><input type="radio" name="f1" value="D"> Quarante-neuf</label>
+    </div>
+    <div class="question">
+      4. 1000 in French?
+      <label><input type="radio" name="f2" value="A"> Cent</label>
+      <label><input type="radio" name="f2" value="B"> Mille</label>
+      <label><input type="radio" name="f2" value="C"> Million</label>
+      <label><input type="radio" name="f2" value="D"> Deux-cent</label>
+    </div>
+  </div>
+
+  <!-- PHYSICS -->
+  <div class="subject" onclick="toggle(this,'phy')">
+    Physics <span class="arrow">▼</span>
+  </div>
+  <div class="questions" id="phy">
+    <div class="question">
+      5. Vector quantity has?
+      <label><input type="radio" name="p1" value="A"> Magnitude only</label>
+      <label><input type="radio" name="p1" value="B"> Direction only</label>
+      <label><input type="radio" name="p1" value="C"> Magnitude & direction</label>
+      <label><input type="radio" name="p1" value="D"> Mass</label>
+    </div>
+  </div>
+
+  <!-- MATHS -->
+  <div class="subject" onclick="toggle(this,'math')">
+    Mathematics <span class="arrow">▼</span>
+  </div>
+  <div class="questions" id="math">
+    <div class="question">
+      6. A={1,2}, B={2,3}, A∩B?
+      <label><input type="radio" name="m1" value="A">{1}</label>
+      <label><input type="radio" name="m1" value="B">{2}</label>
+      <label><input type="radio" name="m1" value="C">{3}</label>
+      <label><input type="radio" name="m1" value="D">{1,2,3}</label>
+    </div>
+  </div>
+
+  <!-- ENGLISH -->
+  <div class="subject" onclick="toggle(this,'eng')">
+    English <span class="arrow">▼</span>
+  </div>
+  <div class="questions" id="eng">
+    <div class="question">
+      7. Which is a noun?
+      <label><input type="radio" name="e1" value="A"> Run</label>
+      <label><input type="radio" name="e1" value="B"> Quickly</label>
+      <label><input type="radio" name="e1" value="C"> Happiness</label>
+      <label><input type="radio" name="e1" value="D"> Blue</label>
+    </div>
+  </div>
+
+  <button id="submit" onclick="submitTest()">Submit Test</button>
+  <div class="result" id="result"></div>
+
+</div>
 </div>
 
 <script>
 const answers={
-chem:["b","c","a","d","b"],
-french:["a","c","b","a","d"],
-physics:["c","a","d","b","c"],
-maths:["b","d","a","c","b"],
-english:["a","c","b","d","a"]
-};
-
-const questions={
-chem:[
-"Which element has atomic number 12?",
-"Electronic configuration of Oxygen?",
-"Group 1 elements are called?",
-"Which period has 8 elements?",
-"Valence electrons of Sodium?"
-],
-french:[
-"150 in French is?",
-"2000 in French?",
-"45 in French?",
-"90 in French?",
-"600 in French?"
-],
-physics:[
-"Vector quantity?",
-"SI unit of displacement?",
-"Resultant of vectors?",
-"Scalar quantity?",
-"Vector has?"
-],
-maths:[
-"A ∪ B means?",
-"A ∩ B means?",
-"Empty set symbol?",
-"Subset symbol?",
-"Universal set?"
-],
-english:[
-"Noun is?",
-"Verb shows?",
-"Adjective describes?",
-"Pronoun replaces?",
-"Adverb modifies?"
-]
+ c1:"B",c2:"C",
+ f1:"A",f2:"B",
+ p1:"C",
+ m1:"B",
+ e1:"C"
 };
 
 function start(){
-if(!name.value||!matric.value||!dept.value){
-alert("Fill all fields");
-return;
-}
-login.style.display="none";
-test.style.display="block";
-render();
-}
-
-function render(){
-let html="";
-for(let s in questions){
-html+=`<div class="subject" onclick="toggle('${s}')">${s.toUpperCase()}</div>`;
-html+=`<div class="questions" id="${s}">`;
-questions[s].forEach((q,i)=>{
-html+=`<p>${i+1}. ${q}</p>`;
-["a","b","c","d"].forEach(o=>{
-html+=`<label><input type="radio" name="${s}${i}" value="${o}"> ${o.toUpperCase()}</label>`;
-});
-});
-html+="</div>";
-}
-subjects.innerHTML=html;
+ if(!name.value||!matric.value||!dept.value){
+  alert("Fill all details");
+  return;
+ }
+ window.info={n:name.value,m:matric.value,d:dept.value};
+ login.style.display="none";
+ test.style.display="block";
 }
 
-function toggle(id){
-let el=document.getElementById(id);
-el.style.display=el.style.display==="block"?"none":"block";
+function toggle(el,id){
+ el.classList.toggle("open");
+ const q=document.getElementById(id);
+ q.style.display=q.style.display==="block"?"none":"block";
 }
-
-let userAns={};
 
 function submitTest(){
-document.querySelectorAll("input[type=radio]").forEach(r=>{
-if(r.checked){
-userAns[r.name]=r.value;
-}
-});
-test.style.display="none";
-showCorrection();
-}
+ let score=0;
+ for(let q in answers){
+  const s=document.querySelector(`input[name=${q}]:checked`);
+  if(s&&s.value===answers[q]) score++;
+ }
+ document.querySelectorAll("input").forEach(i=>i.disabled=true);
+ submit.disabled=true;
 
-function showCorrection(){
-correction.style.display="block";
-let out="";
-for(let s in answers){
-out+=`<h4>${s.toUpperCase()}</h4>`;
-answers[s].forEach((a,i)=>{
-let key=s+i;
-let u=userAns[key]||"none";
-out+=`<p class="${u===a?'correct':'wrong'}">
-Q${i+1}: Your = ${u.toUpperCase()} | Correct = ${a.toUpperCase()}
-</p>`;
-});
-}
-corrections.innerHTML=out;
-}
+ let msg=
+`MAAUN WEEKEND TEST RESULT
+Name: ${info.n}
+Matric No: ${info.m}
+Department: ${info.d}
+Score: ${score}/${Object.keys(answers).length}`;
 
-function sendWhatsApp(){
-let msg=`MAAUN WEEKEND TEST%0AName: ${name.value}%0AMatric: ${matric.value}%0ADept: ${dept.value}%0A%0A`;
-for(let k in userAns){
-msg+=`${k}:${userAns[k]}, `;
-}
-window.open(`https://wa.me/2348068581625?text=${msg}`);
+ let link="https://wa.me/2348068581625?text="+encodeURIComponent(msg);
+ result.innerHTML=`<b>Score:</b> ${score}<br><a href="${link}" target="_blank"><button>Send to WhatsApp</button></a>`;
 }
 </script>
 
 </body>
-</html>
+               </html>
