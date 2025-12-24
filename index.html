@@ -8,7 +8,7 @@
 <style>
 :root {
   --primary:#0b4f6c;
-  --light:#f4f7fb;
+  --bg:#f4f7fb;
   --success:#2ecc71;
 }
 
@@ -16,8 +16,8 @@
 
 body {
   margin:0;
-  font-family: "Segoe UI", system-ui, sans-serif;
-  background:var(--light);
+  font-family:system-ui, Arial, sans-serif;
+  background:var(--bg);
 }
 
 /* HEADER */
@@ -29,11 +29,11 @@ body {
   align-items:center;
 }
 .header img {
-  width:70px;
-  margin-right:15px;
+  width:65px;
+  margin-right:12px;
 }
 .header h1 {
-  font-size:18px;
+  font-size:17px;
   margin:0;
 }
 .header p {
@@ -46,15 +46,15 @@ body {
 .container {
   max-width:900px;
   margin:20px auto;
-  padding:20px;
+  padding:15px;
 }
 
 /* CARD */
 .card {
   background:white;
-  border-radius:10px;
+  border-radius:12px;
   padding:20px;
-  box-shadow:0 10px 25px rgba(0,0,0,.05);
+  box-shadow:0 10px 25px rgba(0,0,0,.06);
 }
 
 /* INPUTS */
@@ -62,7 +62,7 @@ input, select {
   width:100%;
   padding:12px;
   margin-bottom:12px;
-  border-radius:6px;
+  border-radius:8px;
   border:1px solid #ccc;
   font-size:15px;
 }
@@ -74,19 +74,20 @@ button {
   border:none;
   padding:14px;
   width:100%;
-  border-radius:8px;
+  border-radius:10px;
   font-size:16px;
   cursor:pointer;
 }
 button:disabled {
   background:#999;
+  cursor:not-allowed;
 }
 
-/* SUBJECT ACCORDION */
+/* SUBJECT */
 .subject {
   background:#eef3f8;
   padding:14px;
-  border-radius:8px;
+  border-radius:10px;
   margin-top:15px;
   display:flex;
   justify-content:space-between;
@@ -95,8 +96,8 @@ button:disabled {
   font-weight:600;
 }
 .subject.done {
-  background:#e9f9f0;
-  border-left:5px solid var(--success);
+  background:#eafaf1;
+  border-left:6px solid var(--success);
 }
 
 .arrow {
@@ -108,12 +109,11 @@ button:disabled {
 
 .questions {
   display:none;
-  padding:15px;
+  padding:15px 10px;
 }
 
-/* QUESTIONS */
 .question {
-  margin-bottom:15px;
+  margin-bottom:16px;
 }
 .question label {
   display:block;
@@ -124,7 +124,7 @@ button:disabled {
 .result {
   margin-top:20px;
   padding:15px;
-  border-radius:8px;
+  border-radius:10px;
   background:#f7f7f7;
 }
 </style>
@@ -143,20 +143,20 @@ button:disabled {
 <div class="container">
 
 <!-- LOGIN -->
-<div class="card" id="login">
+<div class="card" id="loginBox">
   <h2>Student Login</h2>
-  <input id="name" placeholder="Full Name">
-  <input id="matric" placeholder="Matric Number">
-  <select id="dept">
+  <input id="fullName" placeholder="Full Name">
+  <input id="matricNo" placeholder="Matric Number">
+  <select id="department">
     <option value="">Select Department</option>
-    <option>PTY</option>
-    <option>MLS</option>
+    <option value="PTY">PTY</option>
+    <option value="MLS">MLS</option>
   </select>
-  <button onclick="start()">Start Test</button>
+  <button onclick="startTest()">Start Test</button>
 </div>
 
 <!-- TEST -->
-<div class="card" id="test" style="display:none">
+<div class="card" id="testBox" style="display:none">
   <h2>Weekend Test</h2>
 
   <!-- CHEMISTRY -->
@@ -243,57 +243,69 @@ button:disabled {
     </div>
   </div>
 
-  <button id="submit" onclick="submitTest()">Submit Test</button>
-  <div class="result" id="result"></div>
+  <button id="submitBtn" onclick="submitTest()">Submit Test</button>
+  <div class="result" id="resultBox"></div>
 
 </div>
 </div>
 
 <script>
-const answers={
- c1:"B",c2:"C",
- f1:"A",f2:"B",
+const answers = {
+ c1:"B", c2:"C",
+ f1:"A", f2:"B",
  p1:"C",
  m1:"B",
  e1:"C"
 };
 
-function start(){
- if(!name.value||!matric.value||!dept.value){
-  alert("Fill all details");
-  return;
+function startTest(){
+ const fullName = document.getElementById("fullName").value.trim();
+ const matricNo = document.getElementById("matricNo").value.trim();
+ const department = document.getElementById("department").value;
+
+ if(!fullName || !matricNo || !department){
+   alert("Fill all details");
+   return;
  }
- window.info={n:name.value,m:matric.value,d:dept.value};
- login.style.display="none";
- test.style.display="block";
+
+ window.student = {fullName, matricNo, department};
+
+ document.getElementById("loginBox").style.display="none";
+ document.getElementById("testBox").style.display="block";
 }
 
 function toggle(el,id){
  el.classList.toggle("open");
  const q=document.getElementById(id);
- q.style.display=q.style.display==="block"?"none":"block";
+ q.style.display = q.style.display==="block" ? "none" : "block";
 }
 
 function submitTest(){
- let score=0;
+ let score = 0;
  for(let q in answers){
-  const s=document.querySelector(`input[name=${q}]:checked`);
-  if(s&&s.value===answers[q]) score++;
+   const s = document.querySelector(`input[name=${q}]:checked`);
+   if(s && s.value===answers[q]) score++;
  }
- document.querySelectorAll("input").forEach(i=>i.disabled=true);
- submit.disabled=true;
 
- let msg=
+ document.querySelectorAll("input").forEach(i=>i.disabled=true);
+ document.getElementById("submitBtn").disabled=true;
+
+ const msg =
 `MAAUN WEEKEND TEST RESULT
-Name: ${info.n}
-Matric No: ${info.m}
-Department: ${info.d}
+Name: ${student.fullName}
+Matric No: ${student.matricNo}
+Department: ${student.department}
 Score: ${score}/${Object.keys(answers).length}`;
 
- let link="https://wa.me/2348068581625?text="+encodeURIComponent(msg);
- result.innerHTML=`<b>Score:</b> ${score}<br><a href="${link}" target="_blank"><button>Send to WhatsApp</button></a>`;
+ const link = "https://wa.me/2348068581625?text=" + encodeURIComponent(msg);
+
+ document.getElementById("resultBox").innerHTML =
+ `<b>Score:</b> ${score}<br><br>
+ <a href="${link}" target="_blank">
+   <button>Send Result to WhatsApp</button>
+ </a>`;
 }
 </script>
 
 </body>
-               </html>
+</html>
