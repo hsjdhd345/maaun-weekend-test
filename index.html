@@ -3,17 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <title>MAAUN Weekend Test</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
 body{font-family:Arial;background:#eef2f5;margin:0}
-.header{background:#0b4f6c;color:#fff;display:flex;align-items:center;padding:15px}
-.header img{width:80px;margin-right:15px}
+.header{background:#083b52;color:#fff;padding:15px;display:flex;align-items:center}
+.header img{width:70px;margin-right:15px}
 .container{max-width:900px;margin:20px auto;background:#fff;padding:20px;border-radius:8px}
+input,select{width:100%;padding:10px;margin:6px 0}
+button{padding:12px;background:#083b52;color:#fff;border:none;border-radius:5px;cursor:pointer;width:100%}
 .subject{background:#f0f6fa;padding:12px;margin-top:10px;cursor:pointer;font-weight:bold}
 .questions{display:none;padding:10px}
-button{width:100%;padding:12px;margin-top:10px;background:#0b4f6c;color:#fff;border:none;border-radius:5px}
-input,select{width:100%;padding:10px;margin-bottom:10px}
-.result-box{background:#f9f9f9;padding:15px;margin-top:15px;border-radius:5px}
+label{display:block;margin:5px 0}
+.correct{color:green}
+.wrong{color:red}
 </style>
 </head>
 
@@ -24,10 +27,7 @@ input,select{width:100%;padding:10px;margin-bottom:10px}
 <h2>MAAUN Weekend Test</h2>
 </div>
 
-<div class="container">
-
-<!-- LOGIN -->
-<div id="login">
+<div class="container" id="login">
 <h3>Enter Your Details</h3>
 <input id="name" placeholder="Full Name">
 <input id="matric" placeholder="Matric Number">
@@ -39,251 +39,131 @@ input,select{width:100%;padding:10px;margin-bottom:10px}
 <button onclick="start()">Start Test</button>
 </div>
 
-<!-- TEST -->
-<div id="test" style="display:none">
-
-<!-- CHEMISTRY -->
-<div class="subject" onclick="toggle('chem')">Chemistry ▼</div>
-<div class="questions" id="chem">
-<p>1. Element with electronic config 2,8,1?</p>
-<input type="radio" name="c1" value="A"> Mg<br>
-<input type="radio" name="c1" value="B"> Na<br>
-<input type="radio" name="c1" value="C"> Al<br>
-<input type="radio" name="c1" value="D"> Ne<br>
-
-<p>2. Group elements have same?</p>
-<input type="radio" name="c2" value="A"> Mass<br>
-<input type="radio" name="c2" value="B"> Shells<br>
-<input type="radio" name="c2" value="C"> Valence electrons<br>
-<input type="radio" name="c2" value="D"> Period<br>
-
-<p>3. Atomic number equals?</p>
-<input type="radio" name="c3" value="A"> Neutrons<br>
-<input type="radio" name="c3" value="B"> Protons<br>
-<input type="radio" name="c3" value="C"> Nucleons<br>
-<input type="radio" name="c3" value="D"> Shells<br>
-
-<p>4. Noble gas among these?</p>
-<input type="radio" name="c4" value="A"> Chlorine<br>
-<input type="radio" name="c4" value="B"> Neon<br>
-<input type="radio" name="c4" value="C"> Sodium<br>
-<input type="radio" name="c4" value="D"> Calcium<br>
-
-<p>5. Oxygen has how many valence electrons?</p>
-<input type="radio" name="c5" value="A"> 4<br>
-<input type="radio" name="c5" value="B"> 5<br>
-<input type="radio" name="c5" value="C"> 6<br>
-<input type="radio" name="c5" value="D"> 8<br>
+<div class="container" id="test" style="display:none">
+<div id="subjects"></div>
+<button onclick="submitTest()">Submit Test</button>
 </div>
 
-<!-- FRENCH -->
-<div class="subject" onclick="toggle('french')">French ▼</div>
-<div class="questions" id="french">
-<p>6. 45 in French?</p>
-<input type="radio" name="f1" value="A"> Quarante-cinq<br>
-<input type="radio" name="f1" value="B"> Cinquante-cinq<br>
-<input type="radio" name="f1" value="C"> Trente-cinq<br>
-<input type="radio" name="f1" value="D"> Quarante-neuf<br>
-
-<p>7. 1000 in French?</p>
-<input type="radio" name="f2" value="A"> Cent<br>
-<input type="radio" name="f2" value="B"> Mille<br>
-<input type="radio" name="f2" value="C"> Million<br>
-<input type="radio" name="f2" value="D"> Deux-cent<br>
-
-<p>8. 120 in French?</p>
-<input type="radio" name="f3" value="A"> Cent vingt<br>
-<input type="radio" name="f3" value="B"> Vingt cent<br>
-<input type="radio" name="f3" value="C"> Deux cent<br>
-<input type="radio" name="f3" value="D"> Cent deux<br>
-
-<p>9. 75 in French?</p>
-<input type="radio" name="f4" value="A"> Soixante-quinze<br>
-<input type="radio" name="f4" value="B"> Septante-cinq<br>
-<input type="radio" name="f4" value="C"> Soixante-cinq<br>
-<input type="radio" name="f4" value="D"> Soixante-dix-cinq<br>
-
-<p>10. 2000 in French?</p>
-<input type="radio" name="f5" value="A"> Deux mille<br>
-<input type="radio" name="f5" value="B"> Mille deux<br>
-<input type="radio" name="f5" value="C"> Deux cents<br>
-<input type="radio" name="f5" value="D"> Mille cent<br>
-</div>
-
-<!-- PHYSICS -->
-<div class="subject" onclick="toggle('physics')">Physics ▼</div>
-<div class="questions" id="physics">
-<p>11. Vector quantity has?</p>
-<input type="radio" name="p1" value="A"> Magnitude only<br>
-<input type="radio" name="p1" value="B"> Direction only<br>
-<input type="radio" name="p1" value="C"> Magnitude & direction<br>
-<input type="radio" name="p1" value="D"> Mass<br>
-
-<p>12. Which is a vector?</p>
-<input type="radio" name="p2" value="A"> Speed<br>
-<input type="radio" name="p2" value="B"> Distance<br>
-<input type="radio" name="p2" value="C"> Energy<br>
-<input type="radio" name="p2" value="D"> Velocity<br>
-
-<p>13. Unit of displacement?</p>
-<input type="radio" name="p3" value="A"> m/s<br>
-<input type="radio" name="p3" value="B"> m<br>
-<input type="radio" name="p3" value="C"> N<br>
-<input type="radio" name="p3" value="D"> kg<br>
-
-<p>14. Scalar quantity has?</p>
-<input type="radio" name="p4" value="A"> Direction<br>
-<input type="radio" name="p4" value="B"> Magnitude only<br>
-<input type="radio" name="p4" value="C"> Force<br>
-<input type="radio" name="p4" value="D"> Acceleration<br>
-
-<p>15. Which is NOT a vector?</p>
-<input type="radio" name="p5" value="A"> Force<br>
-<input type="radio" name="p5" value="B"> Velocity<br>
-<input type="radio" name="p5" value="C"> Acceleration<br>
-<input type="radio" name="p5" value="D"> Energy<br>
-</div>
-
-<!-- MATHS -->
-<div class="subject" onclick="toggle('maths')">Mathematics ▼</div>
-<div class="questions" id="maths">
-<p>16. A={1,2,3}, B={3,4}. A∩B?</p>
-<input type="radio" name="m1" value="A"> {1,2}<br>
-<input type="radio" name="m1" value="B"> {3}<br>
-<input type="radio" name="m1" value="C"> {4}<br>
-<input type="radio" name="m1" value="D"> {1,2,3,4}<br>
-
-<p>17. Union symbol?</p>
-<input type="radio" name="m2" value="A"> ∩<br>
-<input type="radio" name="m2" value="B"> −<br>
-<input type="radio" name="m2" value="C"> ∪<br>
-<input type="radio" name="m2" value="D"> ⊂<br>
-
-<p>18. Complement of set A?</p>
-<input type="radio" name="m3" value="A"> A′<br>
-<input type="radio" name="m3" value="B"> A∪U<br>
-<input type="radio" name="m3" value="C"> A∩U<br>
-<input type="radio" name="m3" value="D"> U<br>
-
-<p>19. Disjoint sets have?</p>
-<input type="radio" name="m4" value="A"> Same elements<br>
-<input type="radio" name="m4" value="B"> No common elements<br>
-<input type="radio" name="m4" value="C"> Subsets<br>
-<input type="radio" name="m4" value="D"> Numbers only<br>
-
-<p>20. If A={a,b} then n(A)=?</p>
-<input type="radio" name="m5" value="A"> 1<br>
-<input type="radio" name="m5" value="B"> 2<br>
-<input type="radio" name="m5" value="C"> 3<br>
-<input type="radio" name="m5" value="D"> 4<br>
-</div>
-
-<!-- ENGLISH -->
-<div class="subject" onclick="toggle('english')">English ▼</div>
-<div class="questions" id="english">
-<p>21. Which is a noun?</p>
-<input type="radio" name="e1" value="A"> Run<br>
-<input type="radio" name="e1" value="B"> Quickly<br>
-<input type="radio" name="e1" value="C"> Happiness<br>
-<input type="radio" name="e1" value="D"> Blue<br>
-
-<p>22. Identify the verb: She writes neatly</p>
-<input type="radio" name="e2" value="A"> She<br>
-<input type="radio" name="e2" value="B"> Writes<br>
-<input type="radio" name="e2" value="C"> Neatly<br>
-<input type="radio" name="e2" value="D"> The<br>
-
-<p>23. Which is an adjective?</p>
-<input type="radio" name="e3" value="A"> Teacher<br>
-<input type="radio" name="e3" value="B"> Blue<br>
-<input type="radio" name="e3" value="C"> Sing<br>
-<input type="radio" name="e3" value="D"> Slowly<br>
-
-<p>24. Word that replaces a noun?</p>
-<input type="radio" name="e4" value="A"> Verb<br>
-<input type="radio" name="e4" value="B"> Adjective<br>
-<input type="radio" name="e4" value="C"> Pronoun<br>
-<input type="radio" name="e4" value="D"> Conjunction<br>
-
-<p>25. Which is a conjunction?</p>
-<input type="radio" name="e5" value="A"> And<br>
-<input type="radio" name="e5" value="B"> Very<br>
-<input type="radio" name="e5" value="C"> Jump<br>
-<input type="radio" name="e5" value="D"> Under<br>
-</div>
-
-<button id="submitBtn" onclick="submitTest()">Submit</button>
-<div id="result" class="result-box"></div>
-
-</div>
-
-<!-- CORRECTION PAGE -->
-<div id="correction" style="display:none">
-<h2>Correction Page</h2>
-<div id="answers"></div>
-</div>
-
+<div class="container" id="correction" style="display:none">
+<h3>Correction</h3>
+<div id="corrections"></div>
+<button onclick="sendWhatsApp()">Send Result to WhatsApp</button>
 </div>
 
 <script>
-const correct={
-c1:"B",c2:"C",c3:"B",c4:"B",c5:"C",
-f1:"A",f2:"B",f3:"A",f4:"A",f5:"A",
-p1:"C",p2:"D",p3:"B",p4:"B",p5:"D",
-m1:"B",m2:"C",m3:"A",m4:"B",m5:"B",
-e1:"C",e2:"B",e3:"B",e4:"C",e5:"A"
+const answers={
+chem:["b","c","a","d","b"],
+french:["a","c","b","a","d"],
+physics:["c","a","d","b","c"],
+maths:["b","d","a","c","b"],
+english:["a","c","b","d","a"]
+};
+
+const questions={
+chem:[
+"Which element has atomic number 12?",
+"Electronic configuration of Oxygen?",
+"Group 1 elements are called?",
+"Which period has 8 elements?",
+"Valence electrons of Sodium?"
+],
+french:[
+"150 in French is?",
+"2000 in French?",
+"45 in French?",
+"90 in French?",
+"600 in French?"
+],
+physics:[
+"Vector quantity?",
+"SI unit of displacement?",
+"Resultant of vectors?",
+"Scalar quantity?",
+"Vector has?"
+],
+maths:[
+"A ∪ B means?",
+"A ∩ B means?",
+"Empty set symbol?",
+"Subset symbol?",
+"Universal set?"
+],
+english:[
+"Noun is?",
+"Verb shows?",
+"Adjective describes?",
+"Pronoun replaces?",
+"Adverb modifies?"
+]
 };
 
 function start(){
-if(!name.value||!matric.value||!dept.value){alert("Fill all fields");return;}
-window.info={name:name.value,matric:matric.value,dept:dept.value};
-login.style.display="none";test.style.display="block";
+if(!name.value||!matric.value||!dept.value){
+alert("Fill all fields");
+return;
+}
+login.style.display="none";
+test.style.display="block";
+render();
+}
+
+function render(){
+let html="";
+for(let s in questions){
+html+=`<div class="subject" onclick="toggle('${s}')">${s.toUpperCase()}</div>`;
+html+=`<div class="questions" id="${s}">`;
+questions[s].forEach((q,i)=>{
+html+=`<p>${i+1}. ${q}</p>`;
+["a","b","c","d"].forEach(o=>{
+html+=`<label><input type="radio" name="${s}${i}" value="${o}"> ${o.toUpperCase()}</label>`;
+});
+});
+html+="</div>";
+}
+subjects.innerHTML=html;
 }
 
 function toggle(id){
-let q=document.getElementById(id);
-q.style.display=q.style.display=="block"?"none":"block";
+let el=document.getElementById(id);
+el.style.display=el.style.display==="block"?"none":"block";
 }
+
+let userAns={};
 
 function submitTest(){
-let score=0;let student={};
-for(let q in correct){
-let s=document.querySelector(`input[name="${q}"]:checked`);
-student[q]=s?s.value:"None";
-if(s&&s.value===correct[q])score++;
+document.querySelectorAll("input[type=radio]").forEach(r=>{
+if(r.checked){
+userAns[r.name]=r.value;
 }
-document.querySelectorAll("input").forEach(i=>i.disabled=true);
-submitBtn.disabled=true;
-
-let msg=`MAAUN WEEKEND TEST
-Name: ${info.name}
-Matric: ${info.matric}
-Dept: ${info.dept}
-Score: ${score}/25`;
-
-result.innerHTML=`
-<p><b>Score:</b> ${score}/25</p>
-<a target="_blank" href="https://wa.me/2348068581625?text=${encodeURIComponent(msg)}">
-<button>Send Result to WhatsApp</button></a>
-<button onclick="showCorrection()">View Corrections</button>
-`;
-
-window.student=student;
+});
+test.style.display="none";
+showCorrection();
 }
 
 function showCorrection(){
-test.style.display="none";
 correction.style.display="block";
-let out="";let n=1;
-for(let q in correct){
-out+=`<p><b>Q${n}</b><br>
-Your Answer: ${student[q]}<br>
-Correct Answer: ${correct[q]}</p><hr>`;
-n++;
+let out="";
+for(let s in answers){
+out+=`<h4>${s.toUpperCase()}</h4>`;
+answers[s].forEach((a,i)=>{
+let key=s+i;
+let u=userAns[key]||"none";
+out+=`<p class="${u===a?'correct':'wrong'}">
+Q${i+1}: Your = ${u.toUpperCase()} | Correct = ${a.toUpperCase()}
+</p>`;
+});
 }
-answers.innerHTML=out;
+corrections.innerHTML=out;
+}
+
+function sendWhatsApp(){
+let msg=`MAAUN WEEKEND TEST%0AName: ${name.value}%0AMatric: ${matric.value}%0ADept: ${dept.value}%0A%0A`;
+for(let k in userAns){
+msg+=`${k}:${userAns[k]}, `;
+}
+window.open(`https://wa.me/2348068581625?text=${msg}`);
 }
 </script>
 
 </body>
-  </html>
+</html>
