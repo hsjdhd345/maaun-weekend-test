@@ -5,41 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MAAUN Weekend Test</title>
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
 :root{
   --primary:#0b4f6c;
   --bg:#f4f7fb;
-  --card:#fff;
+  --card:#ffffff;
   --success:#2ecc71;
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,system-ui;background:var(--bg);}
+body{margin:0;font-family:Arial,system-ui;background:var(--bg)}
 
 header{
   background:var(--primary);
-  color:#fff;
+  color:white;
   padding:14px 20px;
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
 }
 header .left{display:flex;align-items:center}
 header img{width:55px;margin-right:12px}
 header h1{font-size:16px;margin:0}
-header p{font-size:12px;margin:0;opacity:.85}
-
-header nav a{
-  color:#fff;
-  margin-left:15px;
-  cursor:pointer;
-  text-decoration:none;
-  font-weight:600;
-}
-header nav a:hover{text-decoration:underline}
+header p{font-size:12px;margin:0;opacity:.9}
+nav a{color:white;margin-left:15px;cursor:pointer;font-weight:600}
 
 .container{max-width:900px;margin:20px auto;padding:15px}
+
 .card{
   background:var(--card);
   padding:20px;
@@ -58,7 +51,7 @@ input,select,button{
 input,select{border:1px solid #ccc}
 button{
   background:var(--primary);
-  color:#fff;
+  color:white;
   border:none;
   cursor:pointer;
 }
@@ -69,14 +62,12 @@ button:disabled{background:#999}
   padding:14px;
   border-radius:10px;
   margin-top:15px;
-  display:flex;
-  justify-content:space-between;
-  cursor:pointer;
   font-weight:600;
+  cursor:pointer;
 }
-.questions{display:none;padding:15px 5px}
 
-.question{margin-bottom:15px}
+.questions{display:none;padding:12px 5px}
+.question{margin-bottom:14px}
 .question label{
   display:flex;
   align-items:center;
@@ -84,19 +75,21 @@ button:disabled{background:#999}
   padding:6px 8px;
   border-radius:6px;
   background:#f7f7f7;
-  cursor:pointer;
 }
 .question input{margin-right:10px}
 
-.result{margin-top:15px;background:#f1f1f1;padding:12px;border-radius:8px}
-
+.result{background:#f1f1f1;padding:12px;border-radius:8px;margin-top:15px}
 .hide{display:none}
 
-.subject-score{
-  background:#f1f1f1;
-  padding:8px;
-  border-radius:6px;
-  margin:6px 0;
+.score-box{
+  background:#eef;
+  padding:10px;
+  border-radius:8px;
+  margin-top:10px;
+}
+
+@media print{
+  button, nav, header {display:none}
 }
 </style>
 </head>
@@ -105,13 +98,12 @@ button:disabled{background:#999}
 
 <header>
   <div class="left">
-    <img src="maaun-logo.jpg" alt="MAAUN Logo">
+    <img src="maaun-logo.jpg">
     <div>
       <h1>Maryam Abacha American University of Nigeria</h1>
       <p>Weekend Test • Online Assessment</p>
     </div>
   </div>
-
   <nav>
     <a onclick="showStudent()">Student</a>
     <a onclick="showAdmin()">Admin</a>
@@ -162,8 +154,6 @@ button:disabled{background:#999}
       3. 45 in French?
       <label><input type="radio" name="f1" value="A"> Quarante-cinq</label>
       <label><input type="radio" name="f1" value="B"> Cinquante</label>
-      <label><input type="radio" name="f1" value="C"> Trente-cinq</label>
-      <label><input type="radio" name="f1" value="D"> Quarante-neuf</label>
     </div>
   </div>
 
@@ -172,13 +162,11 @@ button:disabled{background:#999}
     <div class="question">
       4. Vector quantity has?
       <label><input type="radio" name="p1" value="A"> Magnitude only</label>
-      <label><input type="radio" name="p1" value="B"> Direction only</label>
       <label><input type="radio" name="p1" value="C"> Magnitude & direction</label>
-      <label><input type="radio" name="p1" value="D"> Mass</label>
     </div>
   </div>
 
-  <button id="submitBtn" onclick="submitTest()">Submit</button>
+  <button id="submitBtn" onclick="submitTest()">Submit Test</button>
   <div class="result" id="resultBox"></div>
 </div>
 
@@ -186,7 +174,6 @@ button:disabled{background:#999}
 
 <!-- ADMIN -->
 <div id="adminSection" class="hide">
-
 <div class="card">
   <h2>Admin Login</h2>
   <input id="adminPassword" type="password" placeholder="Admin Password">
@@ -194,25 +181,35 @@ button:disabled{background:#999}
 </div>
 
 <div id="adminPanel" class="hide">
-  <h2>Student Results</h2>
+  <h2>Submitted Results</h2>
   <div id="resultsContainer"></div>
 </div>
-
 </div>
 
 </div>
 
 <script>
-const answers={c1:"B",c2:"C",f1:"A",p1:"C"};
+const answers={
+  c1:"B", c2:"C",
+  f1:"A",
+  p1:"C"
+};
+
+const subjects={
+  Chemistry:["c1","c2"],
+  French:["f1"],
+  Physics:["p1"]
+};
+
 let student={};
 
 function showStudent(){
-  document.getElementById("studentSection").classList.remove("hide");
-  document.getElementById("adminSection").classList.add("hide");
+  studentSection.classList.remove("hide");
+  adminSection.classList.add("hide");
 }
 function showAdmin(){
-  document.getElementById("adminSection").classList.remove("hide");
-  document.getElementById("studentSection").classList.add("hide");
+  adminSection.classList.remove("hide");
+  studentSection.classList.add("hide");
 }
 
 function startTest(){
@@ -220,7 +217,7 @@ function startTest(){
   student.matricNo=matricNo.value.trim();
   student.department=department.value;
   if(!student.fullName||!student.matricNo||!student.department){
-    alert("Fill all details");return;
+    alert("Fill all fields");return;
   }
   loginBox.classList.add("hide");
   testBox.classList.remove("hide");
@@ -232,30 +229,41 @@ function toggle(id){
 }
 
 function submitTest(){
-  let total=0;
-  Object.keys(answers).forEach(q=>{
-    if(document.querySelector(`input[name=${q}]:checked`)?.value===answers[q]) total++;
-  });
+  let subjectScores={}, total=0;
+
+  for(let sub in subjects){
+    let score=0;
+    subjects[sub].forEach(q=>{
+      if(document.querySelector(`input[name=${q}]:checked`)?.value===answers[q]){
+        score++; total++;
+      }
+    });
+    subjectScores[sub]=score;
+  }
 
   document.querySelectorAll("input").forEach(i=>i.disabled=true);
   submitBtn.disabled=true;
 
   let results=JSON.parse(localStorage.getItem("studentResults")||"[]");
-  results.push({...student,total});
+  results.push({...student,subjectScores,total});
   localStorage.setItem("studentResults",JSON.stringify(results));
 
   let msg=`MAAUN WEEKEND TEST RESULT
 Name: ${student.fullName}
 Matric: ${student.matricNo}
 Dept: ${student.department}
-Score: ${total}/${Object.keys(answers).length}`;
+Total: ${total}`;
 
-  resultBox.innerHTML=`
-  <b>Score:</b> ${total}<br><br>
+  let html=`<b>Total Score:</b> ${total}<div class="score-box">`;
+  for(let s in subjectScores){
+    html+=`${s}: ${subjectScores[s]}<br>`;
+  }
+  html+=`</div>
   <a target="_blank" href="https://wa.me/2348068581625?text=${encodeURIComponent(msg)}">
-    <button>Send to WhatsApp</button>
-  </a>
-  `;
+  <button>Send to WhatsApp</button></a>
+  <button onclick="window.print()">Print Corrections</button>`;
+
+  resultBox.innerHTML=html;
 }
 
 function adminLogin(){
@@ -267,17 +275,17 @@ function adminLogin(){
 }
 
 function displayResults(){
-  const c=resultsContainer;
-  c.innerHTML="";
-  const r=JSON.parse(localStorage.getItem("studentResults")||"[]");
-  if(!r.length){c.innerHTML="No submissions yet";return;}
+  resultsContainer.innerHTML="";
+  let r=JSON.parse(localStorage.getItem("studentResults")||"[]");
+  if(!r.length){resultsContainer.innerHTML="No data";return;}
   r.forEach(s=>{
-    c.innerHTML+=`
-    <div class="card">
-      <b>${s.fullName}</b><br>
-      ${s.matricNo} | ${s.department}<br>
-      Score: ${s.total}
-    </div>`;
+    let h=`<div class="card"><b>${s.fullName}</b><br>
+    ${s.matricNo} | ${s.department}<br>`;
+    for(let sub in s.subjectScores){
+      h+=`${sub}: ${s.subjectScores[sub]}<br>`;
+    }
+    h+=`<b>Total:</b> ${s.total}</div>`;
+    resultsContainer.innerHTML+=h;
   });
 }
 </script>
