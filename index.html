@@ -18,8 +18,6 @@ body{
   font-family:system-ui,Arial;
   background:linear-gradient(120deg,#f4f7fb,#eaf2f8);
 }
-
-/* HEADER */
 header{
   background:var(--main);
   color:#fff;
@@ -41,8 +39,6 @@ nav a{
   font-weight:600;
 }
 nav a:hover{text-decoration:underline}
-
-/* LAYOUT */
 .container{
   max-width:950px;
   margin:25px auto;
@@ -55,8 +51,6 @@ nav a:hover{text-decoration:underline}
   box-shadow:0 10px 30px rgba(0,0,0,.1);
   margin-bottom:22px;
 }
-
-/* FORMS */
 input,select,button{
   width:100%;
   padding:13px;
@@ -70,12 +64,9 @@ button{
   background:var(--main);
   color:#fff;
   cursor:pointer;
-  transition:.3s;
 }
 button:hover{opacity:.9}
 button:disabled{background:#888}
-
-/* SUBJECT ACCORDION */
 .subject{
   background:var(--soft);
   padding:15px;
@@ -83,15 +74,9 @@ button:disabled{background:#888}
   font-weight:700;
   margin-top:18px;
   cursor:pointer;
-  transition:.3s;
 }
 .subject:hover{background:var(--hover)}
-.questions{
-  display:none;
-  padding:15px 10px;
-}
-
-/* QUESTIONS */
+.questions{display:none;padding:15px 10px}
 .question{margin-bottom:18px}
 .option{
   display:flex;
@@ -101,12 +86,9 @@ button:disabled{background:#888}
   padding:12px;
   border-radius:10px;
   margin-top:8px;
-  transition:.25s;
 }
 .option:hover{background:#e9f1f7}
 .option input{width:auto}
-
-/* RESULT */
 .result{
   background:#f1f5f9;
   padding:16px;
@@ -118,8 +100,14 @@ button:disabled{background:#888}
   border-bottom:1px dashed #ccc;
 }
 .answer-row:last-child{border:none}
-
 .hide{display:none}
+.admin-card{
+  background:#f9fbfd;
+  padding:14px;
+  border-radius:12px;
+  margin-bottom:14px;
+  border-left:5px solid var(--main);
+}
 </style>
 </head>
 
@@ -162,34 +150,26 @@ button:disabled{background:#888}
 <div class="subject" onclick="toggle('chem')">Chemistry</div>
 <div class="questions" id="chem">
   <div class="question">1. Element with 2,8,1?
-    <label class="option"><input type="radio" name="c1" value="Magnesium">Magnesium</label>
-    <label class="option"><input type="radio" name="c1" value="Sodium">Sodium</label>
-    <label class="option"><input type="radio" name="c1" value="Aluminium">Aluminium</label>
-    <label class="option"><input type="radio" name="c1" value="Neon">Neon</label>
+    <label class="option"><input type="radio" name="q1" value="Magnesium">Magnesium</label>
+    <label class="option"><input type="radio" name="q1" value="Sodium">Sodium</label>
+    <label class="option"><input type="radio" name="q1" value="Aluminium">Aluminium</label>
+    <label class="option"><input type="radio" name="q1" value="Neon">Neon</label>
   </div>
 </div>
 
 <div class="subject" onclick="toggle('fr')">French</div>
 <div class="questions" id="fr">
   <div class="question">2. 45 in French?
-    <label class="option"><input type="radio" name="f1" value="Quarante-cinq">Quarante-cinq</label>
-    <label class="option"><input type="radio" name="f1" value="Cinquante">Cinquante</label>
+    <label class="option"><input type="radio" name="q2" value="Quarante-cinq">Quarante-cinq</label>
+    <label class="option"><input type="radio" name="q2" value="Cinquante">Cinquante</label>
   </div>
 </div>
 
 <div class="subject" onclick="toggle('phy')">Physics</div>
 <div class="questions" id="phy">
   <div class="question">3. Vector quantity has?
-    <label class="option"><input type="radio" name="p1" value="Magnitude only">Magnitude only</label>
-    <label class="option"><input type="radio" name="p1" value="Magnitude & direction">Magnitude & direction</label>
-  </div>
-</div>
-
-<div class="subject" onclick="toggle('eng')">English</div>
-<div class="questions" id="eng">
-  <div class="question">4. A noun is?
-    <label class="option"><input type="radio" name="e1" value="Naming word">Naming word</label>
-    <label class="option"><input type="radio" name="e1" value="Action word">Action word</label>
+    <label class="option"><input type="radio" name="q3" value="Magnitude only">Magnitude only</label>
+    <label class="option"><input type="radio" name="q3" value="Magnitude & direction">Magnitude & direction</label>
   </div>
 </div>
 
@@ -227,9 +207,11 @@ function showAdmin(){
 }
 
 function startTest(){
-  student.fullName=fullName.value.trim();
-  student.matricNo=matricNo.value.trim();
-  student.department=department.value;
+  student={
+    fullName:fullName.value.trim(),
+    matricNo:matricNo.value.trim(),
+    department:department.value
+  };
   if(!student.fullName||!student.matricNo||!student.department){
     alert("Fill all details");return;
   }
@@ -238,22 +220,28 @@ function startTest(){
 }
 
 function submitTest(){
-  let display="";
-  let wa=`MAAUN WEEKEND TEST\nName:${student.fullName}\nMatric:${student.matricNo}\nDept:${student.department}\n\n`;
-
+  let answers=[];
   document.querySelectorAll(".question").forEach((q,i)=>{
     const sel=q.querySelector("input:checked");
-    const ans=sel?sel.value:"Not answered";
-    display+=`<div class="answer-row"><b>Q${i+1}:</b> ${ans}</div>`;
-    wa+=`Q${i+1}: ${ans}\n`;
+    answers.push({
+      question:q.childNodes[0].textContent.trim(),
+      answer:sel?sel.value:"Not answered"
+    });
   });
+
+  let saved=JSON.parse(localStorage.getItem("maaunResults")||"[]");
+  saved.push({...student,answers,date:new Date().toLocaleString()});
+  localStorage.setItem("maaunResults",JSON.stringify(saved));
 
   document.querySelectorAll("input").forEach(i=>i.disabled=true);
   submitBtn.disabled=true;
 
+  let wa=`MAAUN WEEKEND TEST\nName:${student.fullName}\nMatric:${student.matricNo}\nDept:${student.department}\n\n`;
+  answers.forEach((a,i)=>wa+=`Q${i+1}: ${a.answer}\n`);
+
   resultBox.innerHTML=`
     <h3>Your Answers</h3>
-    ${display}
+    ${answers.map((a,i)=>`<div class="answer-row"><b>Q${i+1}:</b> ${a.answer}</div>`).join("")}
     <br>
     <a target="_blank" href="https://wa.me/2348068581625?text=${encodeURIComponent(wa)}">
       <button>Send to WhatsApp</button>
@@ -265,7 +253,21 @@ function adminLogin(){
   if(adminPassword.value!=="maaun123"){
     alert("Wrong password");return;
   }
-  adminPanel.innerHTML="<b>Admin logged in.</b><p>Results are received via WhatsApp.</p>";
+  const data=JSON.parse(localStorage.getItem("maaunResults")||"[]");
+  if(!data.length){
+    adminPanel.innerHTML="<p>No submissions yet.</p>";
+    return;
+  }
+  adminPanel.innerHTML=data.map(s=>`
+    <div class="admin-card">
+      <b>${s.fullName}</b><br>
+      Matric: ${s.matricNo}<br>
+      Dept: ${s.department}<br>
+      <small>${s.date}</small>
+      <hr>
+      ${s.answers.map((a,i)=>`Q${i+1}: ${a.answer}`).join("<br>")}
+    </div>
+  `).join("");
 }
 </script>
 
