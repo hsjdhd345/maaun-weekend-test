@@ -260,18 +260,29 @@ function mark(){
     m1:"B",m2:"C",m3:"A",m4:"C",m5:"B",
     e1:"C",e2:"B",e3:"B",e4:"C",e5:"A"
   };
-  let scores={Chemistry:0,French:0,Physics:0,Maths:0,English:0}; let total=0;
+  let scores={Chemistry:0,French:0,Physics:0,Maths:0,English:0}; 
+  let total=0;
+
   for(let q in correct){
     let sel=document.querySelector(`input[name="${q}"]:checked`);
-    if(sel&&sel.value===correct[q]){
+    let parent = sel ? sel.parentElement : document.querySelector(`input[name="${q}"]`).parentElement;
+    
+    // Remove previous markers if any
+    parent.querySelectorAll(".marker").forEach(m=>m.remove());
+
+    if(sel && sel.value===correct[q]){
       total++;
       if(q.startsWith("c"))scores.Chemistry++;
       if(q.startsWith("f"))scores.French++;
       if(q.startsWith("p"))scores.Physics++;
       if(q.startsWith("m"))scores.Maths++;
       if(q.startsWith("e"))scores.English++;
+      parent.innerHTML += ' <span class="marker" style="color:green;font-weight:bold;">✅</span>';
+    } else {
+      parent.innerHTML += ` <span class="marker" style="color:red;font-weight:bold;">❌ (Correct: ${correct[q]})</span>`;
     }
   }
+
   document.querySelectorAll("input[type=radio]").forEach(r=>r.disabled=true);
   document.getElementById("submitBtn").disabled=true;
 
@@ -292,7 +303,6 @@ TOTAL: ${total}/25`;
     <p><b>Total Score:</b> ${total}/25</p>
     <a href="${whatsappLink}" target="_blank"><button>Send Result on WhatsApp</button></a>`;
 
-  // Highlight completed subjects
   ["chem","french","physics","maths","english"].forEach(id=>{
     let sub=document.querySelector(`.subject[onclick*='${id}']`);
     sub.classList.add("active");
