@@ -3,271 +3,181 @@
 <head>
 <meta charset="UTF-8">
 <title>MAAUN Weekend Test</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-:root{
-  --main:#0b4f6c;
-  --soft:#eef4f8;
-  --card:#ffffff;
-  --hover:#e2eef6;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:system-ui,Arial;
-  background:linear-gradient(120deg,#f4f7fb,#eaf2f8);
-}
-header{
-  background:var(--main);
-  color:#fff;
-  padding:14px 20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-header .left{
-  display:flex;
-  align-items:center;
-}
-header img{width:55px;margin-right:12px}
-header h1{font-size:16px;margin:0}
-header p{font-size:12px;margin:0;opacity:.9}
-nav a{
-  margin-left:18px;
-  cursor:pointer;
-  font-weight:600;
-}
-nav a:hover{text-decoration:underline}
-.container{
-  max-width:950px;
-  margin:25px auto;
-  padding:15px;
-}
-.card{
-  background:var(--card);
-  padding:22px;
-  border-radius:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,.1);
-  margin-bottom:22px;
-}
-input,select,button{
-  width:100%;
-  padding:13px;
-  border-radius:10px;
-  font-size:15px;
-  margin-bottom:14px;
-}
-input,select{border:1px solid #ccc}
-button{
-  border:none;
-  background:var(--main);
-  color:#fff;
-  cursor:pointer;
-}
-button:hover{opacity:.9}
-button:disabled{background:#888}
-.subject{
-  background:var(--soft);
-  padding:15px;
-  border-radius:12px;
-  font-weight:700;
-  margin-top:18px;
-  cursor:pointer;
-}
-.subject:hover{background:var(--hover)}
-.questions{display:none;padding:15px 10px}
-.question{margin-bottom:18px}
-.option{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  background:#f7f7f7;
-  padding:12px;
-  border-radius:10px;
-  margin-top:8px;
-}
-.option:hover{background:#e9f1f7}
-.option input{width:auto}
-.result{
-  background:#f1f5f9;
-  padding:16px;
-  border-radius:12px;
-  margin-top:18px;
-}
-.answer-row{
-  padding:6px 0;
-  border-bottom:1px dashed #ccc;
-}
-.answer-row:last-child{border:none}
-.hide{display:none}
-.admin-card{
-  background:#f9fbfd;
-  padding:14px;
-  border-radius:12px;
-  margin-bottom:14px;
-  border-left:5px solid var(--main);
-}
+body{margin:0;font-family:Arial;background:#eef2f5}
+.header{background:#0b4f6c;color:#fff;display:flex;align-items:center;padding:15px}
+.header h1{font-size:18px;margin:0}
+.header p{margin:0;font-size:13px}
+.header button{margin-left:auto;background:#fff;color:#0b4f6c;border:none;padding:8px 14px;border-radius:6px;cursor:pointer}
+
+.container{max-width:900px;margin:20px auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.1)}
+h2{text-align:center;color:#0b4f6c}
+
+input,select{width:100%;padding:10px;margin-bottom:12px}
+button{width:100%;padding:14px;background:#0b4f6c;color:#fff;border:none;border-radius:6px;font-size:16px;cursor:pointer}
+button:disabled{background:#aaa}
+
+.subject{background:#f0f6fa;padding:12px;margin-top:15px;font-weight:bold;cursor:pointer;border-left:5px solid #0b4f6c;display:flex;justify-content:space-between}
+.subject:hover{background:#dbeaf3}
+.questions{display:none;padding:10px}
+.question{margin-bottom:10px}
+
+.result-box{margin-top:20px;background:#f9f9f9;padding:15px;border-radius:8px}
+
+.card{background:#f0f6fa;padding:15px;margin-bottom:15px;border-radius:8px}
 </style>
 </head>
 
 <body>
 
-<header>
-  <div class="left">
-    <img src="maaun-logo.jpg">
-    <div>
-      <h1>Maryam Abacha American University of Nigeria</h1>
-      <p>Weekend Test • Online Assessment</p>
-    </div>
+<div class="header">
+  <div>
+    <h1>Maryam Abacha American University of Nigeria</h1>
+    <p>Weekend Test</p>
   </div>
-  <nav>
-    <a onclick="showStudent()">Student</a>
-    <a onclick="showAdmin()">Admin</a>
-  </nav>
-</header>
-
-<div class="container">
-
-<!-- STUDENT -->
-<div id="studentSection">
-
-<div class="card" id="loginBox">
-  <h2>Student Login</h2>
-  <input id="fullName" placeholder="Full Name">
-  <input id="matricNo" placeholder="Matric Number">
-  <select id="department">
-    <option value="">Select Department</option>
-    <option>PTY</option>
-    <option>MLS</option>
-  </select>
-  <button onclick="startTest()">Start Test</button>
+  <button onclick="openAdmin()">Admin</button>
 </div>
 
-<div class="card hide" id="testBox">
-<h2>Weekend Test</h2>
+<div class="container" id="studentArea">
 
-<div class="subject" onclick="toggle('chem')">Chemistry</div>
+<!-- LOGIN -->
+<div id="loginForm">
+<h2>Student Login</h2>
+<input id="studentName" placeholder="Full Name">
+<input id="matricNo" placeholder="Matric Number">
+<select id="department">
+<option value="">Select Department</option>
+<option>PTY</option>
+<option>MLS</option>
+</select>
+<button onclick="startTest()">Start Test</button>
+</div>
+
+<!-- TEST -->
+<div id="testContent" style="display:none">
+<h2>MAAUN WEEKEND TEST</h2>
+
+<div class="subject" onclick="toggle('chem')">Chemistry ▼</div>
 <div class="questions" id="chem">
-  <div class="question">1. Element with 2,8,1?
-    <label class="option"><input type="radio" name="q1" value="Magnesium">Magnesium</label>
-    <label class="option"><input type="radio" name="q1" value="Sodium">Sodium</label>
-    <label class="option"><input type="radio" name="q1" value="Aluminium">Aluminium</label>
-    <label class="option"><input type="radio" name="q1" value="Neon">Neon</label>
-  </div>
+<div class="question">1. 2,8,1 configuration?<br>
+<input type="radio" name="c1" value="A">Magnesium<br>
+<input type="radio" name="c1" value="B">Sodium<br>
+<input type="radio" name="c1" value="C">Aluminium<br>
+<input type="radio" name="c1" value="D">Neon
+</div>
 </div>
 
-<div class="subject" onclick="toggle('fr')">French</div>
-<div class="questions" id="fr">
-  <div class="question">2. 45 in French?
-    <label class="option"><input type="radio" name="q2" value="Quarante-cinq">Quarante-cinq</label>
-    <label class="option"><input type="radio" name="q2" value="Cinquante">Cinquante</label>
-  </div>
+<div class="subject" onclick="toggle('french')">French ▼</div>
+<div class="questions" id="french">
+<div class="question">2. 45 in French?<br>
+<input type="radio" name="f1" value="A">Quarante-cinq<br>
+<input type="radio" name="f1" value="B">Cinquante-cinq
+</div>
 </div>
 
-<div class="subject" onclick="toggle('phy')">Physics</div>
-<div class="questions" id="phy">
-  <div class="question">3. Vector quantity has?
-    <label class="option"><input type="radio" name="q3" value="Magnitude only">Magnitude only</label>
-    <label class="option"><input type="radio" name="q3" value="Magnitude & direction">Magnitude & direction</label>
-  </div>
+<div class="subject" onclick="toggle('physics')">Physics ▼</div>
+<div class="questions" id="physics">
+<div class="question">3. Vector quantity?<br>
+<input type="radio" name="p1" value="A">Speed<br>
+<input type="radio" name="p1" value="B">Velocity
+</div>
+</div>
+
+<div class="subject" onclick="toggle('maths')">Mathematics ▼</div>
+<div class="questions" id="maths">
+<div class="question">4. A∩B = ?<br>
+<input type="radio" name="m1" value="A">{3}<br>
+<input type="radio" name="m1" value="B">{1,2}
+</div>
+</div>
+
+<div class="subject" onclick="toggle('english')">English ▼</div>
+<div class="questions" id="english">
+<div class="question">5. Which is a noun?<br>
+<input type="radio" name="e1" value="A">Happiness<br>
+<input type="radio" name="e1" value="B">Quickly
+</div>
 </div>
 
 <button id="submitBtn" onclick="submitTest()">Submit Test</button>
-<div class="result" id="resultBox"></div>
+<div id="result" class="result-box"></div>
+<div id="corrections" class="result-box" style="display:none"></div>
 </div>
 </div>
 
 <!-- ADMIN -->
-<div id="adminSection" class="hide">
-  <div class="card">
-    <h2>Admin Login</h2>
-    <input type="password" id="adminPassword" placeholder="Admin Password">
-    <button onclick="adminLogin()">Login</button>
-    <div id="adminPanel"></div>
-  </div>
-</div>
-
+<div class="container" id="adminArea" style="display:none">
+<h2>Admin Login</h2>
+<input type="password" id="adminPass" placeholder="Admin Password">
+<button onclick="adminLogin()">Login</button>
+<div id="adminResults"></div>
 </div>
 
 <script>
-let student={};
-
-function toggle(id){
-  const el=document.getElementById(id);
-  el.style.display=el.style.display==="block"?"none":"block";
-}
-function showStudent(){
-  studentSection.classList.remove("hide");
-  adminSection.classList.add("hide");
-}
-function showAdmin(){
-  adminSection.classList.remove("hide");
-  studentSection.classList.add("hide");
-}
+const answers={c1:"B",f1:"A",p1:"B",m1:"A",e1:"A"};
 
 function startTest(){
-  student={
-    fullName:fullName.value.trim(),
-    matricNo:matricNo.value.trim(),
-    department:department.value
-  };
-  if(!student.fullName||!student.matricNo||!student.department){
-    alert("Fill all details");return;
-  }
-  loginBox.classList.add("hide");
-  testBox.classList.remove("hide");
+if(!studentName.value||!matricNo.value||!department.value){
+alert("Fill all fields");return;
+}
+window.student={
+name:studentName.value,
+matric:matricNo.value,
+dept:department.value
+};
+loginForm.style.display="none";
+testContent.style.display="block";
+}
+
+function toggle(id){
+let q=document.getElementById(id);
+q.style.display=q.style.display==="block"?"none":"block";
 }
 
 function submitTest(){
-  let answers=[];
-  document.querySelectorAll(".question").forEach((q,i)=>{
-    const sel=q.querySelector("input:checked");
-    answers.push({
-      question:q.childNodes[0].textContent.trim(),
-      answer:sel?sel.value:"Not answered"
-    });
-  });
+let score=0, detail={};
+for(let q in answers){
+let sel=document.querySelector(`input[name="${q}"]:checked`);
+detail[q]=sel?sel.value:"-";
+if(sel&&sel.value===answers[q])score++;
+}
 
-  let saved=JSON.parse(localStorage.getItem("maaunResults")||"[]");
-  saved.push({...student,answers,date:new Date().toLocaleString()});
-  localStorage.setItem("maaunResults",JSON.stringify(saved));
+document.querySelectorAll("input[type=radio]").forEach(i=>i.disabled=true);
+submitBtn.disabled=true;
 
-  document.querySelectorAll("input").forEach(i=>i.disabled=true);
-  submitBtn.disabled=true;
+let record={...student,score,detail,date:new Date().toLocaleString()};
+let data=JSON.parse(localStorage.getItem("maaun")||"[]");
+data.push(record);
+localStorage.setItem("maaun",JSON.stringify(data));
 
-  let wa=`MAAUN WEEKEND TEST\nName:${student.fullName}\nMatric:${student.matricNo}\nDept:${student.department}\n\n`;
-  answers.forEach((a,i)=>wa+=`Q${i+1}: ${a.answer}\n`);
+result.innerHTML=`<b>Total Score:</b> ${score}/${Object.keys(answers).length}`;
 
-  resultBox.innerHTML=`
-    <h3>Your Answers</h3>
-    ${answers.map((a,i)=>`<div class="answer-row"><b>Q${i+1}:</b> ${a.answer}</div>`).join("")}
-    <br>
-    <a target="_blank" href="https://wa.me/2348068581625?text=${encodeURIComponent(wa)}">
-      <button>Send to WhatsApp</button>
-    </a>
-  `;
+let chtml="<h3>Corrections</h3>";
+for(let q in answers){
+chtml+=`<p>${q.toUpperCase()} → Your: ${detail[q]} | Correct: ${answers[q]}</p>`;
+}
+corrections.innerHTML=chtml;
+corrections.style.display="block";
+}
+
+function openAdmin(){
+studentArea.style.display="none";
+adminArea.style.display="block";
 }
 
 function adminLogin(){
-  if(adminPassword.value!=="maaun123"){
-    alert("Wrong password");return;
-  }
-  const data=JSON.parse(localStorage.getItem("maaunResults")||"[]");
-  if(!data.length){
-    adminPanel.innerHTML="<p>No submissions yet.</p>";
-    return;
-  }
-  adminPanel.innerHTML=data.map(s=>`
-    <div class="admin-card">
-      <b>${s.fullName}</b><br>
-      Matric: ${s.matricNo}<br>
-      Dept: ${s.department}<br>
-      <small>${s.date}</small>
-      <hr>
-      ${s.answers.map((a,i)=>`Q${i+1}: ${a.answer}`).join("<br>")}
-    </div>
-  `).join("");
+if(adminPass.value!=="maaun123"){alert("Wrong password");return;}
+let data=JSON.parse(localStorage.getItem("maaun")||"[]");
+adminResults.innerHTML=data.map(s=>`
+<div class="card">
+<b>${s.name}</b><br>
+Matric: ${s.matric}<br>
+Dept: ${s.dept}<br>
+Score: ${s.score}
+</div>
+`).join("");
 }
 </script>
 
