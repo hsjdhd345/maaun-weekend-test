@@ -54,9 +54,7 @@ nav a:hover{text-decoration:underline}
   border-radius:16px;
   box-shadow:0 10px 30px rgba(0,0,0,.1);
   margin-bottom:22px;
-  animation:fade .4s ease;
 }
-@keyframes fade{from{opacity:0;transform:translateY(10px)}}
 
 /* FORMS */
 input,select,button{
@@ -66,9 +64,7 @@ input,select,button{
   font-size:15px;
   margin-bottom:14px;
 }
-input,select{
-  border:1px solid #ccc;
-}
+input,select{border:1px solid #ccc}
 button{
   border:none;
   background:var(--main);
@@ -76,10 +72,10 @@ button{
   cursor:pointer;
   transition:.3s;
 }
-button:hover{opacity:.9;transform:translateY(-1px)}
-button:disabled{background:#888;cursor:not-allowed}
+button:hover{opacity:.9}
+button:disabled{background:#888}
 
-/* SUBJECT DROPDOWN */
+/* SUBJECT ACCORDION */
 .subject{
   background:var(--soft);
   padding:15px;
@@ -96,9 +92,7 @@ button:disabled{background:#888;cursor:not-allowed}
 }
 
 /* QUESTIONS */
-.question{
-  margin-bottom:18px;
-}
+.question{margin-bottom:18px}
 .option{
   display:flex;
   align-items:center;
@@ -109,13 +103,8 @@ button:disabled{background:#888;cursor:not-allowed}
   margin-top:8px;
   transition:.25s;
 }
-.option:hover{
-  background:#e9f1f7;
-}
-.option input{
-  width:auto;
-  transform:scale(1.1);
-}
+.option:hover{background:#e9f1f7}
+.option input{width:auto}
 
 /* RESULT */
 .result{
@@ -125,22 +114,12 @@ button:disabled{background:#888;cursor:not-allowed}
   margin-top:18px;
 }
 .answer-row{
-  padding:8px 0;
+  padding:6px 0;
   border-bottom:1px dashed #ccc;
 }
 .answer-row:last-child{border:none}
 
 .hide{display:none}
-
-/* ADMIN */
-.admin-card{
-  background:#fff;
-  padding:18px;
-  border-radius:14px;
-  box-shadow:0 6px 20px rgba(0,0,0,.1);
-  margin-bottom:15px;
-}
-
 </style>
 </head>
 
@@ -180,90 +159,72 @@ button:disabled{background:#888;cursor:not-allowed}
 <div class="card hide" id="testBox">
 <h2>Weekend Test</h2>
 
-<!-- SUBJECTS -->
 <div class="subject" onclick="toggle('chem')">Chemistry</div>
 <div class="questions" id="chem">
   <div class="question">1. Element with 2,8,1?
-    <label class="option"><input type="radio" name="c1" value="A">Magnesium</label>
-    <label class="option"><input type="radio" name="c1" value="B">Sodium</label>
-    <label class="option"><input type="radio" name="c1" value="C">Aluminium</label>
-    <label class="option"><input type="radio" name="c1" value="D">Neon</label>
-  </div>
-  <div class="question">2. Same group means same?
-    <label class="option"><input type="radio" name="c2" value="A">Mass</label>
-    <label class="option"><input type="radio" name="c2" value="B">Shells</label>
-    <label class="option"><input type="radio" name="c2" value="C">Valence electrons</label>
-    <label class="option"><input type="radio" name="c2" value="D">Atomic number</label>
+    <label class="option"><input type="radio" name="c1" value="Magnesium">Magnesium</label>
+    <label class="option"><input type="radio" name="c1" value="Sodium">Sodium</label>
+    <label class="option"><input type="radio" name="c1" value="Aluminium">Aluminium</label>
+    <label class="option"><input type="radio" name="c1" value="Neon">Neon</label>
   </div>
 </div>
 
 <div class="subject" onclick="toggle('fr')">French</div>
 <div class="questions" id="fr">
-  <div class="question">3. 45 in French?
-    <label class="option"><input type="radio" name="f1" value="A">Quarante-cinq</label>
-    <label class="option"><input type="radio" name="f1" value="B">Cinquante</label>
+  <div class="question">2. 45 in French?
+    <label class="option"><input type="radio" name="f1" value="Quarante-cinq">Quarante-cinq</label>
+    <label class="option"><input type="radio" name="f1" value="Cinquante">Cinquante</label>
   </div>
 </div>
 
 <div class="subject" onclick="toggle('phy')">Physics</div>
 <div class="questions" id="phy">
-  <div class="question">4. Vector quantity has?
-    <label class="option"><input type="radio" name="p1" value="A">Magnitude only</label>
-    <label class="option"><input type="radio" name="p1" value="C">Magnitude & direction</label>
-  </div>
-</div>
-
-<div class="subject" onclick="toggle('math')">Maths</div>
-<div class="questions" id="math">
-  <div class="question">5. A ∩ B means?
-    <label class="option"><input type="radio" name="m1" value="A">Union</label>
-    <label class="option"><input type="radio" name="m1" value="B">Intersection</label>
+  <div class="question">3. Vector quantity has?
+    <label class="option"><input type="radio" name="p1" value="Magnitude only">Magnitude only</label>
+    <label class="option"><input type="radio" name="p1" value="Magnitude & direction">Magnitude & direction</label>
   </div>
 </div>
 
 <div class="subject" onclick="toggle('eng')">English</div>
 <div class="questions" id="eng">
-  <div class="question">6. A noun is?
-    <label class="option"><input type="radio" name="e1" value="C">Naming word</label>
-    <label class="option"><input type="radio" name="e1" value="D">Action word</label>
+  <div class="question">4. A noun is?
+    <label class="option"><input type="radio" name="e1" value="Naming word">Naming word</label>
+    <label class="option"><input type="radio" name="e1" value="Action word">Action word</label>
   </div>
 </div>
 
 <button id="submitBtn" onclick="submitTest()">Submit Test</button>
 <div class="result" id="resultBox"></div>
-
 </div>
 </div>
 
 <!-- ADMIN -->
 <div id="adminSection" class="hide">
-  <div class="admin-card">
+  <div class="card">
     <h2>Admin Login</h2>
     <input type="password" id="adminPassword" placeholder="Admin Password">
     <button onclick="adminLogin()">Login</button>
+    <div id="adminPanel"></div>
   </div>
-  <div id="adminPanel"></div>
 </div>
 
 </div>
 
 <script>
-const answers={c1:"B",c2:"C",f1:"A",p1:"C",m1:"B",e1:"C"};
-const subjects={
-  Chemistry:["c1","c2"],
-  French:["f1"],
-  Physics:["p1"],
-  Maths:["m1"],
-  English:["e1"]
-};
 let student={};
 
 function toggle(id){
   const el=document.getElementById(id);
   el.style.display=el.style.display==="block"?"none":"block";
 }
-function showStudent(){studentSection.classList.remove("hide");adminSection.classList.add("hide")}
-function showAdmin(){adminSection.classList.remove("hide");studentSection.classList.add("hide")}
+function showStudent(){
+  studentSection.classList.remove("hide");
+  adminSection.classList.add("hide");
+}
+function showAdmin(){
+  adminSection.classList.remove("hide");
+  studentSection.classList.add("hide");
+}
 
 function startTest(){
   student.fullName=fullName.value.trim();
@@ -277,29 +238,24 @@ function startTest(){
 }
 
 function submitTest(){
-  let summaryHTML="";
-  let waText=`MAAUN WEEKEND TEST\nName:${student.fullName}\nMatric:${student.matricNo}\nDept:${student.department}\n\n`;
+  let display="";
+  let wa=`MAAUN WEEKEND TEST\nName:${student.fullName}\nMatric:${student.matricNo}\nDept:${student.department}\n\n`;
 
-  for(let sub in subjects){
-    summaryHTML+=`<h4>${sub}</h4>`;
-    waText+=`${sub}:\n`;
-    subjects[sub].forEach(q=>{
-      const sel=document.querySelector(`input[name=${q}]:checked`);
-      const val=sel?sel.value:"Not answered";
-      summaryHTML+=`<div class="answer-row">${q.toUpperCase()} → ${val}</div>`;
-      waText+=`${q.toUpperCase()}: ${val}\n`;
-    });
-    waText+="\n";
-  }
+  document.querySelectorAll(".question").forEach((q,i)=>{
+    const sel=q.querySelector("input:checked");
+    const ans=sel?sel.value:"Not answered";
+    display+=`<div class="answer-row"><b>Q${i+1}:</b> ${ans}</div>`;
+    wa+=`Q${i+1}: ${ans}\n`;
+  });
 
   document.querySelectorAll("input").forEach(i=>i.disabled=true);
   submitBtn.disabled=true;
 
   resultBox.innerHTML=`
     <h3>Your Answers</h3>
-    ${summaryHTML}
+    ${display}
     <br>
-    <a target="_blank" href="https://wa.me/2348068581625?text=${encodeURIComponent(waText)}">
+    <a target="_blank" href="https://wa.me/2348068581625?text=${encodeURIComponent(wa)}">
       <button>Send to WhatsApp</button>
     </a>
   `;
@@ -307,9 +263,9 @@ function submitTest(){
 
 function adminLogin(){
   if(adminPassword.value!=="maaun123"){
-    alert("Wrong admin password");return;
+    alert("Wrong password");return;
   }
-  adminPanel.innerHTML="<b>Admin logged in.</b><br>Results are sent via WhatsApp.";
+  adminPanel.innerHTML="<b>Admin logged in.</b><p>Results are received via WhatsApp.</p>";
 }
 </script>
 
