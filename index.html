@@ -4,560 +4,283 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MAAUN Weekend Test</title>
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
 <style>
 :root{
   --primary:#0b4f6c;
   --bg:#f4f7fb;
+  --card:#fff;
   --success:#2ecc71;
-  --card:#ffffff;
-  --chem:#f0e68c;
-  --fr:#ffb347;
-  --phy:#87ceeb;
-  --math:#d1c4e9;
-  --eng:#ffcccb;
 }
-body{margin:0;font-family:system-ui, Arial,sans-serif;background:var(--bg);}
-header{background:var(--primary);color:white;display:flex;align-items:center;padding:15px;}
-header img{width:65px;margin-right:12px;}
-header h1{font-size:17px;margin:0;}
-header p{font-size:13px;margin:0;opacity:.9;}
-.container{max-width:900px;margin:20px auto;padding:15px;}
-.card{background:var(--card);border-radius:12px;padding:20px;box-shadow:0 6px 18px rgba(0,0,0,.08);margin-bottom:20px;transition:transform .2s,box-shadow .2s;}
-.card:hover{transform:translateY(-4px);box-shadow:0 10px 25px rgba(0,0,0,.12);}
-input,select,button{width:100%;padding:12px;margin-bottom:12px;border-radius:8px;font-size:15px;}
-input,select{border:1px solid #ccc;}
-button{background:var(--primary);color:white;border:none;cursor:pointer;transition:background .2s;}
-button:hover:not(:disabled){background:#09405a;}
-button:disabled{background:#999;cursor:not-allowed;}
-.subject{background:#eef3f8;padding:14px;border-radius:10px;margin-top:15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:600;transition:background .2s;}
-.subject:hover{background:#e2f0ff;}
-.subject.done{background:#eafaf1;border-left:6px solid var(--success);}
-.arrow{transition:.3s;}
-.subject.open .arrow{transform:rotate(180deg);}
-.questions{display:none;padding:15px 10px;overflow:hidden;transition:max-height .4s ease;}
-.question{margin-bottom:16px;}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,system-ui;background:var(--bg);}
+
+header{
+  background:var(--primary);
+  color:#fff;
+  padding:14px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+header .left{display:flex;align-items:center}
+header img{width:55px;margin-right:12px}
+header h1{font-size:16px;margin:0}
+header p{font-size:12px;margin:0;opacity:.85}
+
+header nav a{
+  color:#fff;
+  margin-left:15px;
+  cursor:pointer;
+  text-decoration:none;
+  font-weight:600;
+}
+header nav a:hover{text-decoration:underline}
+
+.container{max-width:900px;margin:20px auto;padding:15px}
+.card{
+  background:var(--card);
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+  margin-bottom:20px;
+}
+
+input,select,button{
+  width:100%;
+  padding:12px;
+  margin-bottom:12px;
+  border-radius:8px;
+  font-size:15px;
+}
+input,select{border:1px solid #ccc}
+button{
+  background:var(--primary);
+  color:#fff;
+  border:none;
+  cursor:pointer;
+}
+button:disabled{background:#999}
+
+.subject{
+  background:#eef3f8;
+  padding:14px;
+  border-radius:10px;
+  margin-top:15px;
+  display:flex;
+  justify-content:space-between;
+  cursor:pointer;
+  font-weight:600;
+}
+.questions{display:none;padding:15px 5px}
+
+.question{margin-bottom:15px}
 .question label{
-  display: flex;
-  align-items: center;
-  margin-top: 8px;
-  padding: 4px 8px;
-  border-radius: 6px;
-  background: #f9f9f9;
-  cursor: pointer;
-  transition: background 0.2s;
+  display:flex;
+  align-items:center;
+  margin-top:6px;
+  padding:6px 8px;
+  border-radius:6px;
+  background:#f7f7f7;
+  cursor:pointer;
 }
-.question label:hover{background: #eef3f8;}
-.question input[type="radio"]{margin-right: 10px; flex-shrink:0;}
-.result{margin-top:20px;padding:15px;border-radius:10px;background:#f7f7f7;}
-.tab-buttons{display:flex;margin-bottom:20px;}
-.tab-buttons button{flex:1;margin-right:5px;}
-.tab-buttons button:last-child{margin-right:0;}
-.tab-content{display:none;}
-.tab-content.active{display:block;}
-.subject-score{margin:5px 0;padding:8px;border-radius:6px;background:#f0f0f0;display:flex;align-items:center;}
-.subject-score i{margin-right:8px;color:var(--primary);}
-.subject-header i{margin-right:8px;}
+.question input{margin-right:10px}
+
+.result{margin-top:15px;background:#f1f1f1;padding:12px;border-radius:8px}
+
+.hide{display:none}
+
+.subject-score{
+  background:#f1f1f1;
+  padding:8px;
+  border-radius:6px;
+  margin:6px 0;
+}
 </style>
 </head>
+
 <body>
 
 <header>
-  <img src="maaun-logo.jpg" alt="MAAUN Logo">
-  <div>
-    <h1>Maryam Abacha American University of Nigeria</h1>
-    <p>Weekend Test • Online Assessment</p>
+  <div class="left">
+    <img src="maaun-logo.jpg" alt="MAAUN Logo">
+    <div>
+      <h1>Maryam Abacha American University of Nigeria</h1>
+      <p>Weekend Test • Online Assessment</p>
+    </div>
   </div>
+
+  <nav>
+    <a onclick="showStudent()">Student</a>
+    <a onclick="showAdmin()">Admin</a>
+  </nav>
 </header>
 
 <div class="container">
 
-<div class="tab-buttons">
-  <button onclick="openTab('studentTab')">Student</button>
-  <button onclick="openTab('adminTab')">Admin</button>
+<!-- STUDENT -->
+<div id="studentSection">
+
+<div class="card" id="loginBox">
+  <h2>Student Login</h2>
+  <input id="fullName" placeholder="Full Name">
+  <input id="matricNo" placeholder="Matric Number">
+  <select id="department">
+    <option value="">Select Department</option>
+    <option>PTY</option>
+    <option>MLS</option>
+  </select>
+  <button onclick="startTest()">Start Test</button>
 </div>
 
-<!-- STUDENT TAB -->
-<div id="studentTab" class="tab-content active">
-  <div class="card" id="loginBox">
-    <h2>Student Login</h2>
-    <input id="fullName" placeholder="Full Name">
-    <input id="matricNo" placeholder="Matric Number">
-    <select id="department">
-      <option value="">Select Department</option>
-      <option value="PTY">PTY</option>
-      <option value="MLS">MLS</option>
-    </select>
-    <button onclick="startTest()">Start Test</button>
+<div class="card hide" id="testBox">
+  <h2>Weekend Test</h2>
+
+  <div class="subject" onclick="toggle('chem')">Chemistry</div>
+  <div class="questions" id="chem">
+    <div class="question">
+      1. Element with 2,8,1?
+      <label><input type="radio" name="c1" value="A"> Magnesium</label>
+      <label><input type="radio" name="c1" value="B"> Sodium</label>
+      <label><input type="radio" name="c1" value="C"> Aluminium</label>
+      <label><input type="radio" name="c1" value="D"> Neon</label>
+    </div>
+    <div class="question">
+      2. Same group means same?
+      <label><input type="radio" name="c2" value="A"> Mass</label>
+      <label><input type="radio" name="c2" value="B"> Shells</label>
+      <label><input type="radio" name="c2" value="C"> Valence electrons</label>
+      <label><input type="radio" name="c2" value="D"> Atomic number</label>
+    </div>
   </div>
 
-  <div class="card" id="testBox" style="display:none">
-    <h2>Weekend Test</h2>
-    
-    <!-- CHEMISTRY -->
-    <div class="subject subject-header" style="border-left:5px solid var(--chem);" onclick="toggle(this,'chem')">
-      <span><i class="fas fa-flask"></i>Chemistry</span> <span class="arrow">▼</span>
+  <div class="subject" onclick="toggle('fr')">French</div>
+  <div class="questions" id="fr">
+    <div class="question">
+      3. 45 in French?
+      <label><input type="radio" name="f1" value="A"> Quarante-cinq</label>
+      <label><input type="radio" name="f1" value="B"> Cinquante</label>
+      <label><input type="radio" name="f1" value="C"> Trente-cinq</label>
+      <label><input type="radio" name="f1" value="D"> Quarante-neuf</label>
     </div>
-    <div class="questions" id="chem">
-      <div class="question">
-        1. Element with 2,8,1?
-        <label><input type="radio" name="c1" value="A"> Magnesium</label>
-        <label><input type="radio" name="c1" value="B"> Sodium</label>
-        <label><input type="radio" name="c1" value="C"> Aluminium</label>
-        <label><input type="radio" name="c1" value="D"> Neon</label>
-      </div>
-      <div class="question">
-        2. Same group means same?
-        <label><input type="radio" name="c2" value="A"> Mass</label>
-        <label><input type="radio" name="c2" value="B"> Shells</label>
-        <label><input type="radio" name="c2" value="C"> Valence electrons</label>
-        <label><input type="radio" name="c2" value="D"> Atomic number</label>
-      </div>
-    </div>
-
-    <!-- FRENCH -->
-    <div class="subject subject-header" style="border-left:5px solid var(--fr);" onclick="toggle(this,'fr')">
-      <span><i class="fas fa-language"></i>French</span> <span class="arrow">▼</span>
-    </div>
-    <div class="questions" id="fr">
-      <div class="question">
-        3. 45 in French?
-        <label><input type="radio" name="f1" value="A"> Quarante-cinq</label>
-        <label><input type="radio" name="f1" value="B"> Cinquante</label>
-        <label><input type="radio" name="f1" value="C"> Trente-cinq</label>
-        <label><input type="radio" name="f1" value="D"> Quarante-neuf</label>
-      </div>
-      <div class="question">
-        4. 1000 in French?
-        <label><input type="radio" name="f2" value="A"> Cent</label>
-        <label><input type="radio" name="f2" value="B"> Mille</label>
-        <label><input type="radio" name="f2" value="C"> Million</label>
-        <label><input type="radio" name="f2" value="D"> Deux-cent</label>
-      </div>
-    </div>
-
-    <!-- PHYSICS -->
-    <div class="subject subject-header" style="border-left:5px solid var(--phy);" onclick="toggle(this,'phy')">
-      <span><i class="fas fa-atom"></i>Physics</span> <span class="arrow">▼</span>
-    </div>
-    <div class="questions" id="phy">
-      <div class="question">
-        5. Vector quantity has?
-        <label><input type="radio" name="p1" value="A"> Magnitude only</label>
-        <label><input type="radio" name="p1" value="B"> Direction only</label>
-        <label><input type="radio" name="p1" value="C"> Magnitude & direction</label>
-        <label><input type="radio" name="p1" value="D"> Mass</label>
-      </div>
-    </div>
-
-    <!-- MATHS -->
-    <div class="subject subject-header" style="border-left:5px solid var(--math);" onclick="toggle(this,'math')">
-      <span><i class="fas fa-square-root-alt"></i>Mathematics</span> <span class="arrow">▼</span>
-    </div>
-    <div class="questions" id="math">
-      <div class="question">
-        6. A={1,2}, B={2,3}, A∩B?
-        <label><input type="radio" name="m1" value="A">{1}</label>
-        <label><input type="radio" name="m1" value="B">{2}</label>
-        <label><input type="radio" name="m1" value="C">{3}</label>
-        <label><input type="radio" name="m1" value="D">{1,2,3}</label>
-      </div>
-    </div>
-
-    <!-- ENGLISH -->
-    <div class="subject subject-header" style="border-left:5px solid var(--eng);" onclick="toggle(this,'eng')">
-      <span><i class="fas fa-book"></i>English</span> <span class="arrow">▼</span>
-    </div>
-    <div class="questions" id="eng">
-      <div class="question">
-        7. Which is a noun?
-        <label><input type="radio" name="e1" value="A"> Run</label>
-        <label><input type="radio" name="e1" value="B"> Quickly</label>
-        <label><input type="radio" name="e1" value="C"> Happiness</label>
-        <label><input type="radio" name="e1" value="D"> Blue</label>
-      </div>
-    </div>
-
-    <button id="submitBtn" onclick="submitTest()">Submit Test</button>
-    <div class="result" id="resultBox"></div>
   </div>
+
+  <div class="subject" onclick="toggle('phy')">Physics</div>
+  <div class="questions" id="phy">
+    <div class="question">
+      4. Vector quantity has?
+      <label><input type="radio" name="p1" value="A"> Magnitude only</label>
+      <label><input type="radio" name="p1" value="B"> Direction only</label>
+      <label><input type="radio" name="p1" value="C"> Magnitude & direction</label>
+      <label><input type="radio" name="p1" value="D"> Mass</label>
+    </div>
+  </div>
+
+  <button id="submitBtn" onclick="submitTest()">Submit</button>
+  <div class="result" id="resultBox"></div>
 </div>
 
-<!-- ADMIN TAB -->
-<div id="adminTab" class="tab-content">
-  <div class="card">
-    <h2>Admin Login</h2>
-    <input id="adminPassword" type="password" placeholder="Enter Admin Password">
-    <button onclick="adminLogin()">Login</button>
-  </div>
-  <div id="adminPanel" style="display:none;">
-    <h2>Submitted Student Results</h2>
-    <div id="resultsContainer"></div>
-  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="adminSection" class="hide">
+
+<div class="card">
+  <h2>Admin Login</h2>
+  <input id="adminPassword" type="password" placeholder="Admin Password">
+  <button onclick="adminLogin()">Login</button>
+</div>
+
+<div id="adminPanel" class="hide">
+  <h2>Student Results</h2>
+  <div id="resultsContainer"></div>
+</div>
+
+</div>
+
 </div>
 
 <script>
-// Tab switching
-function openTab(tabId){
-  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
-}
+const answers={c1:"B",c2:"C",f1:"A",p1:"C"};
+let student={};
 
-// Answers
-const answers={c1:"B",c2:"C",f1:"A",f2:"B",p1:"C",m1:"B",e1:"C"};
+function showStudent(){
+  document.getElementById("studentSection").classList.remove("hide");
+  document.getElementById("adminSection").classList.add("hide");
+}
+function showAdmin(){
+  document.getElementById("adminSection").classList.remove("hide");
+  document.getElementById("studentSection").classList.add("hide");
+}
 
 function startTest(){
-  const fullName = document.getElementById("fullName").value.trim();
-  const matricNo = document.getElementById("matricNo").value.trim();
-  const department = document.getElementById("department").value;
-  if(!fullName||!matricNo||!department){alert("Fill all details");return;}
-  window.student={fullName,matricNo,department};
-  document.getElementById("loginBox").style.display="none";
-  document.getElementById("testBox").style.display="block";
+  student.fullName=fullName.value.trim();
+  student.matricNo=matricNo.value.trim();
+  student.department=department.value;
+  if(!student.fullName||!student.matricNo||!student.department){
+    alert("Fill all details");return;
+  }
+  loginBox.classList.add("hide");
+  testBox.classList.remove("hide");
 }
 
-function toggle(el,id){
-  el.classList.toggle("open");
+function toggle(id){
   const q=document.getElementById(id);
-  if(q.style.maxHeight){
-    q.style.maxHeight=null;
-    setTimeout(()=>q.style.display="none",300);
-  }else{
-    q.style.display="block";
-    setTimeout(()=>q.style.maxHeight=q.scrollHeight+"px",10);
-  }
+  q.style.display=q.style.display==="block"?"none":"block";
 }
 
 function submitTest(){
-  let subjectScores={},total=0;
-  subjectScores["Chemistry"]=(["c1","c2"].filter(q=>document.querySelector(`input[name=${q}]:checked`)?.value===answers[q]).length);
-  subjectScores["French"]=(["f1","f2"].filter(q=>document.querySelector(`input[name=${q}]:checked`)?.value===answers[q]).length);
-  subjectScores["Physics"]=(["p1"].filter(q=>document.querySelector(`input[name=${q}]:checked`)?.value===answers[q]).length);
-  subjectScores["Maths"]=(["m1"].filter(q=>document.querySelector(`input[name=${q}]:checked`)?.value===answers[q]).length);
-  subjectScores["English"]=(["e1"].filter(q=>document.querySelector(`input[name=${q}]:checked`)?.value===answers[q]).length);
-  total=Object.values(subjectScores).reduce((a,b)=>a+b,0);
+  let total=0;
+  Object.keys(answers).forEach(q=>{
+    if(document.querySelector(`input[name=${q}]:checked`)?.value===answers[q]) total++;
+  });
 
   document.querySelectorAll("input").forEach(i=>i.disabled=true);
-  document.getElementById("submitBtn").disabled=true;
+  submitBtn.disabled=true;
 
   let results=JSON.parse(localStorage.getItem("studentResults")||"[]");
-  results.push({...student,subjectScores,total});
+  results.push({...student,total});
   localStorage.setItem("studentResults",JSON.stringify(results));
 
   let msg=`MAAUN WEEKEND TEST RESULT
 Name: ${student.fullName}
-Matric No: ${student.matricNo}
-Department: ${student.department}
-Total Score: ${total}/${Object.keys(answers).length}
-Chemistry: ${subjectScores["Chemistry"]}
-French: ${subjectScores["French"]}
-Physics: ${subjectScores["Physics"]}
-Maths: ${subjectScores["Maths"]}
-English: ${subjectScores["English"]}`;
-  const link="https://wa.me/2348068581625?text="+encodeURIComponent(msg);
+Matric: ${student.matricNo}
+Dept: ${student.department}
+Score: ${total}/${Object.keys(answers).length}`;
 
-  document.getElementById("resultBox").innerHTML=`
-    <b>Total Score:</b> ${total}<br>
-    <a href="${link}" target="_blank"><button>Send to WhatsApp</button></a>
-    <button onclick="viewCorrections()">View Corrections</button>
-    <div id="correctionBox" style="margin-top:20px;"></div>
+  resultBox.innerHTML=`
+  <b>Score:</b> ${total}<br><br>
+  <a target="_blank" href="https://wa.me/2348068581625?text=${encodeURIComponent(msg)}">
+    <button>Send to WhatsApp</button>
+  </a>
   `;
 }
 
-function viewCorrections(){
-  const correctionBox=document.getElementById("correctionBox");
-  correctionBox.innerHTML="";
-  const subjects={
-    "Chemistry":["c1","c2"],
-    "French":["f1","f2"],
-    "Physics":["p1"],
-    "Maths":["m1"],
-    "English":["e1"]
-  };
-  for(let sub in subjects){
-    let qList=subjects[sub];
-    let html=`<h3>${sub}</h3>`;
-    qList.forEach((q,i)=>{
-      let questionDiv=document.querySelector(`input[name=${q}]`).closest('.question');
-      let questionLabel=questionDiv.innerHTML;
-      let selected=document.querySelector(`input[name=${q}]:checked`)?.value || "Not answered";
-      let correct=answers[q];
-      html+=`
-        <div style="margin-bottom:10px;padding:8px;border:1px solid #ccc;border-radius:6px;">
-          <strong>Q${i+1}:</strong><br>
-          ${questionLabel}<br>
-          Your answer: <span style="color:blue">${selected}</span><br>
-          Correct answer: <span style="color:green">${correct}</span>
-        </div>
-      `;
-    });
-    correctionBox.innerHTML+=html;
+function adminLogin(){
+  if(adminPassword.value!=="maaun123"){
+    alert("Wrong password");return;
   }
-}
-
-// Admin
-function adminLogin(){
-  const pass=document.getElementById("adminPassword").value;
-  if(pass!=="mauun123"){alert("Wrong password");return;}
-  document.getElementById("adminPanel").style.display="block";
+  adminPanel.classList.remove("hide");
   displayResults();
 }
 
 function displayResults(){
-  const container=document.getElementById("resultsContainer");
-  container.innerHTML="";
-  const results=JSON.parse(localStorage.getItem("studentResults")||"[]");
-  if(results.length===0){container.innerHTML="<p>No results submitted yet.</p>";return;}
-  results.forEach(r=>{
-    const card=document.createElement("div");
-    card.className="card";
-    let subjectsHtml="";
-    const icons={"Chemistry":"fas fa-flask","French":"fas fa-language","Physics":"fas fa-atom","Maths":"fas fa-square-root-alt","English":"fas fa-book"};
-    for(let sub in r.subjectScores){
-      subjectsHtml+=`<div class="subject-score"><i class="${icons[sub]}"></i>${sub}: ${r.subjectScores[sub]}</div>`;
-    }
-    card.innerHTML=`<h3>${r.fullName} (${r.matricNo})</h3>
-    <p>Department: ${r.department}</p>
-    ${subjectsHtml}
-    <p><b>Total: ${r.total}/${Object.keys(answers).length}</b></p>`;
-    container.appendChild(card);
-  });
-}
-</script>
-
-</body>
-</html>sults=JSON.parse(localStorage.getItem("studentResults")||"[]");
-  results.push({...student,subjectScores,total});
-  localStorage.setItem("studentResults",JSON.stringify(results));
-
-  let msg=`MAAUN WEEKEND TEST RESULT
-Name: ${student.fullName}
-Matric No: ${student.matricNo}
-Department: ${student.department}
-Total Score: ${total}/${Object.keys(answers).length}
-Chemistry: ${subjectScores["Chemistry"]}
-French: ${subjectScores["French"]}
-Physics: ${subjectScores["Physics"]}
-Maths: ${subjectScores["Maths"]}
-English: ${subjectScores["English"]}`;
-  const link="https://wa.me/2348068581625?text="+encodeURIComponent(msg);
-
-  document.getElementById("resultBox").innerHTML=`
-    <b>Total Score:</b> ${total}<br>
-    <a href="${link}" target="_blank"><button>Send to WhatsApp</button></a>
-    <button onclick="viewCorrections()">View Corrections</button>
-    <div id="correctionBox" style="margin-top:20px;"></div>
-  `;
-}
-
-// View corrections
-function viewCorrections(){
-  const correctionBox=document.getElementById("correctionBox");
-  correctionBox.innerHTML="";
-  const subjects={
-    "Chemistry":["c1","c2"],
-    "French":["f1","f2"],
-    "Physics":["p1"],
-    "Maths":["m1"],
-    "English":["e1"]
-  };
-  for(let sub in subjects){
-    let qList=subjects[sub];
-    let html=`<h3>${sub}</h3>`;
-    qList.forEach((q,i)=>{
-      let questionDiv=document.querySelector(`input[name=${q}]`).closest('.question');
-      let questionLabel=questionDiv.innerHTML;
-      let selected=document.querySelector(`input[name=${q}]:checked`)?.value || "Not answered";
-      let correct=answers[q];
-      html+=`
-        <div style="margin-bottom:10px;padding:8px;border:1px solid #ccc;border-radius:6px;">
-          <strong>Q${i+1}:</strong><br>
-          ${questionLabel}<br>
-          Your answer: <span style="color:blue">${selected}</span><br>
-          Correct answer: <span style="color:green">${correct}</span>
-        </div>
-      `;
-    });
-    correctionBox.innerHTML+=html;
-  }
-}
-
-// Admin
-function adminLogin(){
-  const pass=document.getElementById("adminPassword").value;
-  if(pass!=="mauun123"){alert("Wrong password");return;}
-  document.getElementById("adminPanel").style.display="block";
-  displayResults();
-}
-function displayResults(){
-  const container=document.getElementById("resultsContainer");
-  container.innerHTML="";
-  const results=JSON.parse(localStorage.getItem("studentResults")||"[]");
-  if(results.length===0){container.innerHTML="<p>No results submitted yet.</p>";return;}
-  results.forEach(r=>{
-    const card=document.createElement("div");
-    card.className="card";
-    let subjectsHtml="";
-    const icons={"Chemistry":"fas fa-flask","French":"fas fa-language","Physics":"fas fa-atom","Maths":"fas fa-square-root-alt","English":"fas fa-book"};
-    for(let sub in r.subjectScores){
-      subjectsHtml+=`<div class="subject-score"><i class="${icons[sub]}"></i>${sub}: ${r.subjectScores[sub]}</div>`;
-    }
-    card.innerHTML=`<h3>${r.fullName} (${r.matricNo})</h3>
-    <p>Department: ${r.department}</p>
-    ${subjectsHtml}
-    <p><b>Total: ${r.total}/${Object.keys(answers).length}</b></p>`;
-    container.appendChild(card);
-  });
-}
-</script>
-
-</body>
-    </html>sults=JSON.parse(localStorage.getItem("studentResults")||"[]");
-  results.push({...student,subjectScores,total});
-  localStorage.setItem("studentResults",JSON.stringify(results));
-
-  let msg=`MAAUN WEEKEND TEST RESULT
-Name: ${student.fullName}
-Matric No: ${student.matricNo}
-Department: ${student.department}
-Total Score: ${total}/${Object.keys(answers).length}
-Chemistry: ${subjectScores["Chemistry"]}
-French: ${subjectScores["French"]}
-Physics: ${subjectScores["Physics"]}
-Maths: ${subjectScores["Maths"]}
-English: ${subjectScores["English"]}`;
-  const link="https://wa.me/2348068581625?text="+encodeURIComponent(msg);
-
-  document.getElementById("resultBox").innerHTML=`
-    <b>Total Score:</b> ${total}<br>
-    <a href="${link}" target="_blank"><button>Send to WhatsApp</button></a>
-    <button onclick="viewCorrections()">View Corrections</button>
-    <div id="correctionBox" style="margin-top:20px;"></div>
-  `;
-}
-
-// View corrections
-function viewCorrections(){
-  const correctionBox=document.getElementById("correctionBox");
-  correctionBox.innerHTML="";
-  const subjects={
-    "Chemistry":["c1","c2"],
-    "French":["f1","f2"],
-    "Physics":["p1"],
-    "Maths":["m1"],
-    "English":["e1"]
-  };
-  for(let sub in subjects){
-    let qList=subjects[sub];
-    let html=`<h3>${sub}</h3>`;
-    qList.forEach((q,i)=>{
-      let questionLabel=document.querySelector(`.questions input[name=${q}]`).closest('.questions').querySelector(`.question:nth-child(${i+1})`).innerText;
-      let selected=document.querySelector(`input[name=${q}]:checked`)?.value || "Not answered";
-      let correct=answers[q];
-      html+=`
-        <div style="margin-bottom:10px;padding:8px;border:1px solid #ccc;border-radius:6px;">
-          <strong>Q${i+1}:</strong> ${questionLabel}<br>
-          Your answer: <span style="color:blue">${selected}</span><br>
-          Correct answer: <span style="color:green">${correct}</span>
-        </div>
-      `;
-    });
-    correctionBox.innerHTML+=html;
-  }
-}
-
-// Admin
-function adminLogin(){
-  const pass=document.getElementById("adminPassword").value;
-  if(pass!=="mauun123"){alert("Wrong password");return;}
-  document.getElementById("adminPanel").style.display="block";
-  displayResults();
-}
-function displayResults(){
-  const container=document.getElementById("resultsContainer");
-  container.innerHTML="";
-  const results=JSON.parse(localStorage.getItem("studentResults")||"[]");
-  if(results.length===0){container.innerHTML="<p>No results submitted yet.</p>";return;}
-  results.forEach(r=>{
-    const card=document.createElement("div");
-    card.className="card";
-    let subjectsHtml="";
-    const icons={"Chemistry":"fas fa-flask","French":"fas fa-language","Physics":"fas fa-atom","Maths":"fas fa-square-root-alt","English":"fas fa-book"};
-    for(let sub in r.subjectScores){
-      subjectsHtml+=`<div class="subject-score"><i class="${icons[sub]}"></i>${sub}: ${r.subjectScores[sub]}</div>`;
-    }
-    card.innerHTML=`<h3>${r.fullName} (${r.matricNo})</h3>
-    <p>Department: ${r.department}</p>
-    ${subjectsHtml}
-    <p><b>Total: ${r.total}/${Object.keys(answers).length}</b></p>`;
-    container.appendChild(card);
-  });
-}
-</script>
-
-</body>
-</html>ults=JSON.parse(localStorage.getItem("studentResults")||"[]");
-  results.push({...student,subjectScores,total});
-  localStorage.setItem("studentResults",JSON.stringify(results));
-
-  let msg=`MAAUN WEEKEND TEST RESULT
-Name: ${student.fullName}
-Matric No: ${student.matricNo}
-Department: ${student.department}
-Total Score: ${total}/${Object.keys(answers).length}
-Chemistry: ${subjectScores["Chemistry"]}
-French: ${subjectScores["French"]}
-Physics: ${subjectScores["Physics"]}
-Maths: ${subjectScores["Maths"]}
-English: ${subjectScores["English"]}`;
-  const link="https://wa.me/2348068581625?text="+encodeURIComponent(msg);
-  document.getElementById("resultBox").innerHTML=`<b>Total Score:</b> ${total}<br><a href="${link}" target="_blank"><button>Send to WhatsApp</button></a>`;
-}
-
-// Admin
-function adminLogin(){
-  const pass=document.getElementById("adminPassword").value;
-  if(pass!=="mauun123"){alert("Wrong password");return;}
-  document.getElementById("adminPanel").style.display="block";
-  displayResults();
-}
-function displayResults(){
-  const container=document.getElementById("resultsContainer");
-  container.innerHTML="";
-  const results=JSON.parse(localStorage.getItem("studentResults")||"[]");
-  if(results.length===0){container.innerHTML="<p>No results submitted yet.</p>";return;}
-  results.forEach(r=>{
-    const card=document.createElement("div");
-    card.className="card";
-    let subjectsHtml="";
-    const icons={"Chemistry":"fas fa-flask","French":"fas fa-language","Physics":"fas fa-atom","Maths":"fas fa-square-root-alt","English":"fas fa-book"};
-    for(let sub in r.subjectScores){
-      subjectsHtml+=`<div class="subject-score"><i class="${icons[sub]}"></i>${sub}: ${r.subjectScores[sub]}</div>`;
-    }
-    card.innerHTML=`<h3>${r.fullName} (${r.matricNo})</h3>
-    <p>Department: ${r.department}</p>
-    ${subjectsHtml}
-    <p><b>Total: ${r.total}/${Object.keys(answers).length}</b></p>`;
-    container.appendChild(card);
-  });
-}
-</script>
-
-</body>
-</html>res[sub]}</div>`;
-    }
-    card.innerHTML=`<h3>${r.fullName} (${r.matricNo})</h3>
-    <p>Department: ${r.department}</p>
-    ${subjectsHtml}
-    <p><b>Total: ${r.total}/${Object.keys(answers).length}</b></p>`;
-    container.appendChild(card);
+  const c=resultsContainer;
+  c.innerHTML="";
+  const r=JSON.parse(localStorage.getItem("studentResults")||"[]");
+  if(!r.length){c.innerHTML="No submissions yet";return;}
+  r.forEach(s=>{
+    c.innerHTML+=`
+    <div class="card">
+      <b>${s.fullName}</b><br>
+      ${s.matricNo} | ${s.department}<br>
+      Score: ${s.total}
+    </div>`;
   });
 }
 </script>
 
 </body>
 </html>
-
-
-
-
