@@ -21,7 +21,7 @@ header{
   gap:15px;
 }
 header img{width:55px}
-header h1{font-size:17px;margin:0}
+header h1{font-size:16px;margin:0}
 header button{
   margin-left:auto;
   background:#fff;
@@ -32,6 +32,7 @@ header button{
   font-weight:bold;
   cursor:pointer;
 }
+
 .container{
   max-width:1100px;
   margin:20px auto;
@@ -40,6 +41,7 @@ header button{
   border-radius:16px;
   box-shadow:0 10px 30px rgba(0,0,0,.1);
 }
+
 h2{text-align:center;color:#0b4f6c}
 
 input,select{
@@ -49,6 +51,7 @@ input,select{
   border-radius:8px;
   border:1px solid #0b4f6c;
 }
+
 button.main{
   width:100%;
   padding:14px;
@@ -59,6 +62,7 @@ button.main{
   font-size:16px;
   cursor:pointer;
 }
+
 .subject{
   margin-top:20px;
   padding:15px;
@@ -68,14 +72,27 @@ button.main{
   cursor:pointer;
 }
 .subject:hover{background:#d2e9fa}
+
 .questions{display:none;padding:15px}
+
 .question{
   background:#fafafa;
-  padding:14px;
-  border-radius:10px;
-  margin-bottom:14px;
+  padding:16px;
+  border-radius:12px;
+  margin-bottom:16px;
 }
-label{display:block;margin:6px 0}
+
+.question label{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:6px 0;
+  cursor:pointer;
+}
+
+.question input[type="radio"]{
+  flex-shrink:0;
+}
 
 .result,.adminBox{
   background:#f0f6fa;
@@ -83,6 +100,7 @@ label{display:block;margin:6px 0}
   border-radius:12px;
   margin-top:20px;
 }
+
 .card{
   background:#fff;
   padding:15px;
@@ -105,151 +123,161 @@ label{display:block;margin:6px 0}
 
 <!-- LOGIN -->
 <div id="login">
-<h2>Student Login</h2>
-<input id="nameInput" placeholder="Full Name">
-<input id="matricInput" placeholder="Matric Number">
-<select id="deptInput">
-  <option value="">Select Department</option>
-  <option>PTY</option>
-  <option>MLS</option>
-</select>
-<button class="main" onclick="startTest()">Start Test</button>
+  <h2>Student Login</h2>
+  <input id="nameInput" placeholder="Full Name">
+  <input id="matricInput" placeholder="Matric Number">
+  <select id="deptInput">
+    <option value="">Select Department</option>
+    <option>PTY</option>
+    <option>MLS</option>
+  </select>
+  <button class="main" onclick="startTest()">Start Test</button>
 </div>
 
 <!-- TEST -->
 <div id="test" style="display:none"></div>
 
-<!-- RESULT -->
 <div id="result" class="result"></div>
 
 <!-- ADMIN -->
 <div id="admin" class="adminBox" style="display:none">
-<h2>Admin Dashboard</h2>
-<div id="adminData"></div>
+  <h2>Admin Dashboard</h2>
+  <div id="adminData"></div>
 </div>
 
 </div>
 
 <script>
-/* ===== DATA ===== */
-const subjects = [
- { id:"chem", title:"Chemistry – Hybridization", prefix:"c", questions:[
-  ["Hybridization of carbon in CH4?","sp","sp2","sp3","dsp2","C"],
-  ["Hybridization in ethene?","sp","sp2","sp3","dsp3","B"],
-  ["Hybridization in ethyne?","sp","sp2","sp3","dsp2","A"],
-  ["Shape of sp3 molecule?","Linear","Trigonal planar","Tetrahedral","Square planar","C"],
-  ["Hybridization of N in NH3?","sp","sp2","sp3","dsp2","C"],
-  ["Hybridization giving linear shape?","sp","sp2","sp3","dsp3","A"],
-  ["Hybridization in CO2?","sp","sp2","sp3","dsp2","A"],
-  ["Hybrid orbitals form by?","Mixing orbitals","Breaking bonds","Ionization","Fusion","A"],
-  ["Hybridization of O in H2O?","sp","sp2","sp3","dsp2","C"],
-  ["Which is NOT hybrid?","sp","sp2","p","sp3","C"]
- ]},
- { id:"fr", title:"French – Numbers", prefix:"f", questions:[
-  ["45 in French?","Quarante-cinq","Cinquante-cinq","Trente-cinq","Quarante-neuf","A"],
-  ["75 in French?","Soixante-quinze","Septante-cinq","Soixante-cinq","Cinquante-quinze","A"],
-  ["100 in French?","Mille","Cent","Million","Deux-cent","B"],
-  ["120 in French?","Cent vingt","Vingt cent","Deux cent vingt","Cent deux","A"],
-  ["1000 in French?","Mille","Cent","Million","Dix-cent","A"],
-  ["90 in French?","Quatre-vingt-dix","Soixante-dix","Nonante","Cinquante","A"],
-  ["60 in French?","Soixante","Cinquante","Septante","Trente","A"],
-  ["200 in French?","Deux cent","Cent deux","Deux-cents","Mille deux","A"],
-  ["99 in French?","Quatre-vingt-dix-neuf","Soixante-dix-neuf","Quatre-vingt-neuf","Nonante","A"],
-  ["1,000,000 in French?","Mille","Million","Milliard","Cent mille","B"]
- ]},
- { id:"phy", title:"Physics – Kinematics", prefix:"p", questions:[
-  ["What is velocity?","Speed only","Distance/time","Speed with direction","Displacement","C"],
-  ["Unit of acceleration?","m/s","m","m/s2","N","C"],
-  ["Equation v = u + at relates?","Force","Velocity","Energy","Power","B"],
-  ["When acceleration is zero?","Uniform velocity","Uniform accel","Free fall","Projectile","A"],
-  ["Slope of velocity-time graph?","Distance","Acceleration","Speed","Displacement","B"],
-  ["SI unit of displacement?","m","m/s","m/s2","N","A"],
-  ["Average velocity equals?","Total dist/time","Displacement/time","Speed","Accel","B"],
-  ["Object at rest has velocity?","Zero","Constant","Max","Negative","A"],
-  ["Deceleration means?","Negative accel","Positive accel","Zero accel","Speed","A"],
-  ["Equation s = ut + 1/2at^2 is?","First","Second","Third","Fourth","B"]
- ]},
- { id:"math", title:"Mathematics – Sequence & Induction", prefix:"m", questions:[
-  ["Sequence 2,4,6 is?","GP","AP","HP","None","B"],
-  ["Common difference of 5,8,11?","2","3","4","5","B"],
-  ["General term of AP is?","a+nd","a+(n-1)d","an","a/d","B"],
-  ["Induction proves statements for?","One case","Integers","Fractions","Decimals","B"],
-  ["Base step in induction proves?","n=k","n=1","n=k+1","n=0","B"],
-  ["Inductive step assumes?","n=1","n=k","n=0","n=2","B"],
-  ["Sum of first n natural numbers?","n2","n(n+1)/2","n2+1","2n","B"],
-  ["Sequence with ratio?","AP","GP","HP","None","B"],
-  ["First term of AP?","a","d","n","r","A"],
-  ["Induction works on?","Real numbers","Integers","Fractions","Matrices","B"]
- ]},
- { id:"eng", title:"English – Usage", prefix:"e", questions:[
-  ["Which is a noun?","Run","Quickly","Happiness","Blue","C"],
-  ["Verb in: She writes neatly","She","Writes","Neatly","The","B"],
-  ["Adjective here?","Teacher","Blue","Sing","Slowly","B"],
-  ["Word replacing noun?","Verb","Adjective","Pronoun","Conjunction","C"],
-  ["Which is conjunction?","And","Very","Jump","Under","A"],
-  ["Plural of child?","Childs","Children","Childes","Child","B"],
-  ["Correct tense: I ___ yesterday","Go","Gone","Went","Going","C"],
-  ["Opposite of polite?","Kind","Rude","Gentle","Calm","B"],
-  ["Synonym of big?","Large","Small","Tiny","Short","A"],
-  ["MAAUN is a?","School","University","College","Institute","B"]
- ]}
-];
+const data = {
+chem:[
+["Hybridization of carbon in CH₄?","sp","sp²","sp³","dsp²","C"],
+["Hybridization in ethene?","sp","sp²","sp³","dsp³","B"],
+["Hybridization in ethyne?","sp","sp²","sp³","dsp²","A"],
+["Shape of sp³ molecule?","Linear","Trigonal planar","Tetrahedral","Square planar","C"],
+["Hybridization of nitrogen in NH₃?","sp","sp²","sp³","dsp²","C"],
+["Hybridization in CO₂?","sp","sp²","sp³","dsp²","A"],
+["Hybridization giving linear shape?","sp","sp²","sp³","dsp³","A"],
+["Hybrid orbitals form by?","Mixing orbitals","Ionization","Fusion","Breaking bonds","A"],
+["Hybridization of oxygen in H₂O?","sp","sp²","sp³","dsp²","C"],
+["Which is not hybridized?","sp","sp²","p","sp³","C"]
+],
+fr:[
+["45 in French?","Quarante-cinq","Cinquante-cinq","Trente-cinq","Quarante-neuf","A"],
+["75 in French?","Soixante-quinze","Septante-cinq","Soixante-cinq","Cinquante-quinze","A"],
+["100 in French?","Mille","Cent","Million","Deux-cent","B"],
+["120 in French?","Cent vingt","Vingt cent","Deux cent vingt","Cent deux","A"],
+["1000 in French?","Mille","Cent","Million","Dix-cent","A"],
+["90 in French?","Quatre-vingt-dix","Soixante-dix","Nonante","Cinquante","A"],
+["60 in French?","Soixante","Cinquante","Septante","Trente","A"],
+["200 in French?","Deux cent","Cent deux","Deux-cents","Mille deux","A"],
+["99 in French?","Quatre-vingt-dix-neuf","Soixante-dix-neuf","Quatre-vingt-neuf","Nonante","A"],
+["1,000,000 in French?","Mille","Million","Milliard","Cent mille","B"]
+],
+phy:[
+["Velocity is?","Speed only","Distance/time","Speed with direction","Displacement","C"],
+["Unit of acceleration?","m/s","m","m/s²","N","C"],
+["Slope of v–t graph?","Speed","Distance","Acceleration","Force","C"],
+["When acceleration is zero?","Uniform velocity","Free fall","Projectile","Rest","A"],
+["SI unit of displacement?","m","m/s","m/s²","N","A"],
+["Average velocity equals?","Distance/time","Displacement/time","Speed","Acceleration","B"],
+["Object at rest has velocity?","Zero","Max","Constant","Negative","A"],
+["Deceleration means?","Negative acceleration","Zero accel","Positive accel","Speed","A"],
+["Equation v = u + at relates?","Force","Velocity","Power","Energy","B"],
+["s = ut + ½at² is?","1st eqn","2nd eqn","3rd eqn","4th eqn","B"]
+],
+math:[
+["Sequence 2,4,6 is?","GP","AP","HP","None","B"],
+["Common difference of 5,8,11?","2","3","4","5","B"],
+["General term of AP?","a+nd","a+(n−1)d","an","a/d","B"],
+["Induction is used to prove?","Integers","Fractions","Matrices","Vectors","A"],
+["Base step proves?","n=1","n=k","n=k+1","n=0","A"],
+["Inductive step assumes?","n=1","n=k","n=0","n=2","B"],
+["Sum of first n naturals?","n²","n(n+1)/2","2n","n²+1","B"],
+["Sequence with ratio?","AP","GP","HP","None","B"],
+["First term symbol?","a","d","r","n","A"],
+["Induction works on?","Integers","Decimals","Reals","Matrices","A"]
+],
+eng:[
+["Which is a noun?","Run","Quickly","Happiness","Blue","C"],
+["Verb in: She writes neatly","She","Writes","Neatly","The","B"],
+["Which is adjective?","Teacher","Blue","Sing","Slowly","B"],
+["Word replacing noun?","Verb","Adjective","Pronoun","Conjunction","C"],
+["Which is conjunction?","And","Very","Jump","Under","A"],
+["Plural of child?","Childs","Children","Childes","Child","B"],
+["Correct tense: I ___ yesterday","Go","Gone","Went","Going","C"],
+["Opposite of polite?","Kind","Rude","Gentle","Calm","B"],
+["Synonym of big?","Large","Small","Tiny","Short","A"],
+["MAAUN is a?","School","University","College","Institute","B"]
+]
+};
 
-/* ===== BUILD TEST ===== */
-const testDiv = document.getElementById("test");
-let qNo = 1;
+let qno=1;
 
-subjects.forEach(sub=>{
- testDiv.innerHTML += `<div class="subject" onclick="toggle('${sub.id}')">${sub.title}</div>
- <div class="questions" id="${sub.id}"></div>`;
- const box = document.getElementById(sub.id);
- sub.questions.forEach((q,i)=>{
-  box.innerHTML += `<div class="question">${qNo++}. ${q[0]}
-   ${["A","B","C","D"].map((o,j)=>`
-    <label><input type="radio" name="${sub.prefix}${i+1}" value="${o}"> ${q[j+1]}</label>
-   `).join("")}
-  </div>`;
- });
-});
+function buildTest(){
+ let html="";
+ for(let s in data){
+  html+=`<div class="subject" onclick="toggle('${s}')">${s.toUpperCase()}</div><div class="questions" id="${s}">`;
+  data[s].forEach((q,i)=>{
+    html+=`<div class="question">${qno++}. ${q[0]}`;
+    ["A","B","C","D"].forEach((o,j)=>{
+      html+=`<label><input type="radio" name="${s}${i}" value="${o}"> ${q[j+1]}</label>`;
+    });
+    html+="</div>";
+  });
+  html+="</div>";
+ }
+ html+=`<button class="main" onclick="submitTest()">Submit Test</button>`;
+ test.innerHTML=html;
+}
 
-testDiv.innerHTML += `<button class="main" onclick="submitTest()">Submit Test</button>`;
-
-/* ===== FUNCTIONS ===== */
 function toggle(id){
- const e=document.getElementById(id);
- e.style.display = e.style.display==="block"?"none":"block";
+ let e=document.getElementById(id);
+ e.style.display=e.style.display==="block"?"none":"block";
 }
 
 function startTest(){
- const name=document.getElementById("nameInput").value;
- const matric=document.getElementById("matricInput").value;
- const dept=document.getElementById("deptInput").value;
- if(!name||!matric||!dept){alert("Fill all fields");return;}
- document.getElementById("login").style.display="none";
- testDiv.style.display="block";
+ if(!nameInput.value||!matricInput.value||!deptInput.value){
+  alert("Fill all fields");return;
+ }
+ login.style.display="none";
+ test.style.display="block";
+ buildTest();
 }
 
 function submitTest(){
- let score=0;
- subjects.forEach(sub=>{
-  sub.questions.forEach((q,i)=>{
-   const sel=document.querySelector(`input[name="${sub.prefix}${i+1}"]:checked`);
-   if(sel && sel.value===q[5]) score++;
+ let score=0,total=50;
+ for(let s in data){
+  data[s].forEach((q,i)=>{
+    let sel=document.querySelector(`input[name="${s}${i}"]:checked`);
+    if(sel && sel.value===q[5]) score++;
   });
- });
- const all=JSON.parse(localStorage.getItem("maaun")||"[]");
- all.push({name:nameInput.value,matric:matricInput.value,dept:deptInput.value,score});
+ }
+ let record={
+  name:nameInput.value,
+  matric:matricInput.value,
+  dept:deptInput.value,
+  score:score
+ };
+ let all=JSON.parse(localStorage.getItem("maaun")||"[]");
+ all.push(record);
  localStorage.setItem("maaun",JSON.stringify(all));
- result.innerHTML=`<b>Total Score:</b> ${score}/50`;
+ result.innerHTML=`<b>Total Score:</b> ${score}/${total}`;
 }
 
 function openAdmin(){
- const p=prompt("Admin Password");
+ let p=prompt("Admin Password");
  if(p!=="maaun123"){alert("Wrong password");return;}
  admin.style.display="block";
  adminData.innerHTML="";
- JSON.parse(localStorage.getItem("maaun")||"[]").forEach(s=>{
-  adminData.innerHTML+=`<div class="card"><b>${s.name}</b><br>Matric: ${s.matric}<br>Dept: ${s.dept}<br>Score: ${s.score}/50</div>`;
+ let all=JSON.parse(localStorage.getItem("maaun")||"[]");
+ all.forEach(s=>{
+  adminData.innerHTML+=`
+  <div class="card">
+    <b>${s.name}</b><br>
+    Matric: ${s.matric}<br>
+    Dept: ${s.dept}<br>
+    Score: ${s.score}/50
+  </div>`;
  });
 }
 </script>
